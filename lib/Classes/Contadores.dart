@@ -22,7 +22,6 @@ class Contadores {
     {
       lista.add(
         FlipCard(
-          
          back: Card(),
          front: Card(
             shadowColor: const Color.fromRGBO(0, 0, 0, 1),

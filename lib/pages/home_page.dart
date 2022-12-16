@@ -1,9 +1,6 @@
 import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:portalsped/Classes/Contadores.dart';
 import 'package:portalsped/widgets/appBar.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -20,7 +17,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: Appbar.appBar(),
-      body: PaginaInicial(),
+      body: const PaginaInicial(),
     );
   }
 }
@@ -48,40 +45,11 @@ class _MyHomePage extends State<PaginaInicial> {
                 crossAxisSpacing: 10,
                 childAspectRatio: 2.0,
               ),
-            children: createListaContadores(padding),
+            children: Contadores.createListaContadores(),
             padding: EdgeInsets.all(padding),
     );
   }
 
 
-  createListaContadores(double padding)
-  {
-    final double largura = (MediaQuery.of(context).size.width - (2*padding)) / 3;
-    List<SizedBox> lista = [];
-    List<Color> cores = [Color.fromRGBO(230, 26, 90, 1),
-    Color.fromRGBO(255, 186, 9, 1),
-    Color.fromRGBO(0, 139, 124, 1) ];
-
-    for(int i = 0; i<12; i++)
-    {
-      lista.add(
-        SizedBox(
-          width: largura,
-          height: 10.0,
-          child: Card(
-            shadowColor: Color.fromRGBO(0, 0, 0, 1),
-            color: cores[i%3],
-            elevation: 10,
-            child: InkWell(
-              child:Center(child: Text('Contador: $i')),
-              onTap: () {
-                log('Contador: $i');
-              }, 
-            ) 
-          ),
-        )
-      );
-    }
-    return lista;
-  }
+  
 }

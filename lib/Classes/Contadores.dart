@@ -1,11 +1,16 @@
+import 'dart:async';
 import 'dart:developer';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' as material;
 import 'package:flip_card/flip_card.dart';
+import 'package:flutter/material.dart';
 import 'dart:math' as math;
+
+import 'package:portalsped/pages/login_page.dart';
 
 class Contadores {
   static createListaContadores() {
-    List<CardContadores> lista = [];
+    List<Widget> lista = [];
     List<String> contadores = [
       'Escritório Jupiter',
       'Escritório Portal',
@@ -13,86 +18,101 @@ class Contadores {
       'Escritório Contabilidade'
     ];
 
-
     for (int i = 0; i < contadores.length; i++) {
-      lista.add(CardContadores(indice: i, contador: contadores[i])
-        );
+      lista.add(
+        Hero(
+          tag: 'hero-container-$i',
+          child: CardContadores(indice: i, contador: contadores[i]),
+        ),
+      );
     }
     return lista;
   }
 }
 
 class CardContadores extends StatefulWidget {
-  CardContadores({super.key,
-  required this.indice,
-  required this.contador
-  });
+  CardContadores({super.key, required this.indice, required this.contador});
   int indice;
   String contador;
 
-    List<Color> cores = [
-      const Color.fromRGBO(230, 26, 90, 1),
-      const Color.fromRGBO(255, 186, 9, 1),
-      const Color.fromRGBO(0, 139, 124, 1)
-    ];
-
-
-
-
+  List<Color> cores = [
+    const Color.fromRGBO(230, 26, 90, 1),
+    const Color.fromRGBO(255, 186, 9, 1),
+    const Color.fromRGBO(0, 139, 124, 1)
+  ];
   @override
   State<StatefulWidget> createState() => _StateCardContadores();
 }
 
 class _StateCardContadores extends State<CardContadores> {
-  @override
-  Widget build(BuildContext context) {
+  double x = 0;
+  double y = 1;
+  double z = 0;
+  Tween animacao = Tween(begin: 0, end: 500);
 
-    
-    return Container(
-        child: Transform(
-          transform: Matrix4.rotationX(0),
-          child: Container(
-            child: Card(
-                shadowColor: const Color.fromRGBO(0, 0, 0, 1),
-                color: widget.cores[widget.indice % 3],
-                elevation: 10,
-                child: InkWell(
-                  child: Center(
-                    child: Text(
+  _abreTelaSenha() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        alignment: Alignment.center,
+        actions: [
+          Hero(
+            tag: 'hero-container-0',
+            child: Center(
+              child: Container(
+                height: 500,
+                width: 500,
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
                       widget.contador,
                       style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                          fontFamily: 'Inter'),
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  onTap: () {
-                    log(widget.contador);
-                  },
-                )),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shadowColor: const Color.fromRGBO(0, 0, 0, 1),
+      color: widget.cores[widget.indice % 3],
+      elevation: 10,
+      child: InkWell(
+        child: Center(
+          child: Text(
+            widget.contador,
+            style: const TextStyle(
+                color: material.Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+                fontFamily: 'Inter'),
           ),
         ),
-      );
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => LoginPage(
+                  indice: widget.indice,
+                  contador: widget.contador,
+                  cor: widget.cores[widget.indice % 3]),
+            ),
+          );
+        },
+      ),
+    );
   }
-
-
 }
-
-
-
-
-
-
-
-/*
-  funcao(int indice, String contador)
-  {
-
-
-
-  }
-
-
-
-*/

@@ -4,18 +4,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:portalsped/Models/contadores_model.dart';
 import 'dart:math' as math;
 
 import 'package:portalsped/pages/login_page.dart';
 
-class Contadores {
+class ContadoresCard {
   static createListaContadores() {
     List<Widget> lista = [];
-    List<String> contadores = [
-      'Escritório Jupiter',
-      'Escritório Portal',
-      'Escritório Conde',
-      'Escritório Contabilidade'
+    List<ContadoresModel> contadores = [
+      ContadoresModel(nome: 'Escritório Jupiter'),
+      ContadoresModel(nome: 'Escritório Portal'),
+      ContadoresModel(nome: 'Escritório Conde'),
+      ContadoresModel(nome: 'Escritório Contabilidade')
     ];
 
     for (int i = 0; i < contadores.length; i++) {
@@ -33,7 +34,7 @@ class Contadores {
 class CardContadores extends StatefulWidget {
   CardContadores({super.key, required this.indice, required this.contador});
   int indice;
-  String contador;
+  ContadoresModel contador;
 
   List<Color> cores = [
     const Color.fromRGBO(230, 26, 90, 1),
@@ -69,7 +70,7 @@ class _StateCardContadores extends State<CardContadores> {
                       height: 20,
                     ),
                     Text(
-                      widget.contador,
+                      widget.contador.nome,
                       style: const TextStyle(
                           fontSize: 20,
                           color: Colors.black,
@@ -94,7 +95,7 @@ class _StateCardContadores extends State<CardContadores> {
       child: InkWell(
         child: Center(
           child: Text(
-            widget.contador,
+            widget.contador.nome,
             style: const TextStyle(
                 color: material.Colors.white,
                 fontWeight: FontWeight.bold,

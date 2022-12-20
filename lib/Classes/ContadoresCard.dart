@@ -4,10 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:portalsped/Classes/navegacao.dart';
 import 'package:portalsped/Models/contadores_model.dart';
 import 'dart:math' as math;
 
-import 'package:portalsped/pages/login_page.dart';
+import 'package:portalsped/Pages/login_page.dart';
 
 class ContadoresCard {
   static createListaContadores() {
@@ -104,14 +105,10 @@ class _StateCardContadores extends State<CardContadores> {
           ),
         ),
         onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => LoginPage(
-                  indice: widget.indice,
-                  contador: widget.contador,
-                  cor: widget.cores[widget.indice % 3]),
-            ),
-          );
+          Navegacao.telaLogin(context: context,
+           indice: widget.indice,
+          contador: widget.contador, 
+          cor:  widget.cores[widget.indice % 3]);
         },
       ),
     );

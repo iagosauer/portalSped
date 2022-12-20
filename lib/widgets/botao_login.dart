@@ -1,12 +1,17 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:portalsped/Classes/Navegacao.dart';
+import 'package:portalsped/Models/contadores_model.dart';
 
 // ignore: must_be_immutable
 class BotaoLogin extends StatefulWidget {
   TextEditingController controler;
   final Size size;
-  BotaoLogin({Key? key, required this.controler, required this.size})
+  ContadoresModel contador;
+  BotaoLogin({Key? key, required this.controler,
+   required this.size,
+   required this.contador})
       : super(key: key);
 
   @override
@@ -44,8 +49,9 @@ class _BotaoLoginState extends State<BotaoLogin> {
                     style: TextStyle(fontSize: widget.size.height * 0.04),
                   ),
                 ),
-                onPressed: () {
-                  dispose();
+                onPressed: () async {
+                  await Navegacao.telaClientes(usuario: widget.contador,
+                   senha: widget.controler.text, context: context);
                 },
               ),
             ),

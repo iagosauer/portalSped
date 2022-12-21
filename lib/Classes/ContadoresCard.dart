@@ -9,16 +9,12 @@ import 'package:portalsped/Models/contadores_model.dart';
 import 'dart:math' as math;
 
 import 'package:portalsped/Pages/login_page.dart';
+import 'package:portalsped/Repositories/contadores_repository.dart';
 
 class ContadoresCard {
-  static createListaContadores() {
+  static createListaContadores() async {
     List<Widget> lista = [];
-    List<ContadoresModel> contadores = [
-      ContadoresModel(nome: 'Escritório Jupiter'),
-      ContadoresModel(nome: 'Escritório Portal'),
-      ContadoresModel(nome: 'Escritório Conde'),
-      ContadoresModel(nome: 'Escritório Contabilidade')
-    ];
+    var contadores = await ContadoreRepository.getContadores();
 
     for (int i = 0; i < contadores.length; i++) {
       lista.add(
@@ -105,10 +101,11 @@ class _StateCardContadores extends State<CardContadores> {
           ),
         ),
         onTap: () {
-          Navegacao.telaLogin(context: context,
-           indice: widget.indice,
-          contador: widget.contador, 
-          cor:  widget.cores[widget.indice % 3]);
+          Navegacao.telaLogin(
+              context: context,
+              indice: widget.indice,
+              contador: widget.contador,
+              cor: widget.cores[widget.indice % 3]);
         },
       ),
     );

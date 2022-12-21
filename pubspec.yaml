@@ -39,6 +39,7 @@ dependencies:
   flip_card: ^0.6.0
   dio: ^4.0.6
   google_fonts: ^3.0.1
+  ftpconnect: ^2.0.2
 
 dev_dependencies:
   flutter_test:

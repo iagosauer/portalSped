@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:portalsped/Classes/ContadoresCard.dart';
+import 'package:portalsped/Models/contadores_model.dart';
 import 'package:portalsped/widgets/appBar.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -31,18 +32,35 @@ class PaginaInicial extends StatefulWidget {
 
 class _MyHomePage extends State<PaginaInicial> {
   final double padding = 20;
+  bool carregando = true;
+  List<Widget> contadores = [];
+
+  @override
+  void initState() {
+    super.initState();
+    carregandoListaWidget();
+    setState(() {
+      carregando = false;
+    });
+  }
+
+  carregandoListaWidget() async {
+    contadores = await ContadoresCard.createListaContadores();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GridView(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        childAspectRatio: 2.0,
-      ),
-      children: ContadoresCard.createListaContadores(),
-      padding: EdgeInsets.all(padding),
-    );
+    return carregando
+        ? CircularProgressIndicator()
+        : GridView(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 2.0,
+            ),
+            children: contadores,
+            padding: EdgeInsets.all(padding),
+          );
   }
 }

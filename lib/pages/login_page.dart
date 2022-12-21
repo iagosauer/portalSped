@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                         blurRadius: 10,
                       ),
                     ]),
-                height: size.height * 0.62,
+                height: size.height * 0.55,
                 width: size.width * 0.37,
                 child: ListView(
                   children: [
@@ -93,8 +93,10 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: size.height * 0.008,
                     ),
-                    CustomTextFieldPassword(controler: controler,
-                    contador: widget.contador,),
+                    CustomTextFieldPassword(
+                      controler: controler,
+                      contador: widget.contador,
+                    ),
                     SizedBox(
                       height: size.height * 0.008,
                     ),

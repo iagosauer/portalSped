@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portalsped/Classes/MyCustomBehavior.dart';
 import 'package:portalsped/Classes/Utils.dart';
 import 'package:portalsped/pages/home_page.dart';
 
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(

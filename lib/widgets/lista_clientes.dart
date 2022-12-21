@@ -2,15 +2,16 @@
 
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:portalsped/Models/clientes_model.dart';
 import 'package:portalsped/Models/contadores_model.dart';
-import 'package:portalsped/Repositories/clientes.repository.dart';
+import 'package:portalsped/Repositories/clientes_repository.dart';
 
 class ListaClientes extends StatefulWidget {
   ListaClientes({super.key, required this.contador});
 
   final ContadoresModel contador;
+  @override
   State<ListaClientes> createState() => _ListaClientesState();
 }
 
@@ -27,12 +28,17 @@ class _ListaClientesState extends State<ListaClientes> {
     iniciaLista();
   }
 
+  @override
   Widget build(BuildContext context) {
     return carregando
         ? const CircularProgressIndicator()
         : Container(
-            height: 200,
-            width: double.infinity,
+            height: 220,
+            decoration:  const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              color: Color.fromARGB(255, 192, 210, 226),
+            ),
+            width: MediaQuery.of(context).size.width - 20,
             child: ListView(
                 scrollDirection: Axis.horizontal, children: clientesWidget),
           );
@@ -50,36 +56,34 @@ class _ListaClientesState extends State<ListaClientes> {
   }
 
   pastaCliente(ClientesModel cliente) {
-    var cor = const Color.fromRGBO(161, 201, 247, 1);
-    return InkWell(
-      onTap: () {},
-      onHover: (value) {},
-      child: SizedBox(
-        height: 200,
-        child: Card(
-          elevation: 20,
+    var cor =const Color.fromRGBO(161, 201, 247, 1);
+    return Card(
+      elevation: 20,
+      borderOnForeground: true,
+      color: Color.fromARGB(255, 255, 255, 255),
+      child: InkWell(
+        hoverColor: const Color.fromARGB(255, 255, 235, 255),
+        onTap: () {
+          log(cliente.nome);
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Card(
-                child: Icon(
-                  Icons.folder,
-                  color: cor,
-                  size: 150,
-                ),
+              Icon(
+                Icons.folder,
+                color: cor,
+                size: 150,
               ),
-              Card(
-                child: Text(
+                Text(
                   cliente.nome,
-                  style: TextStyle(
-                      shadows: [
-                        const Shadow(color: Colors.black, blurRadius: 0.3)
-                      ],
+                  style: GoogleFonts.inter(
+                    letterSpacing: 2,
                       fontSize: 20,
                       height: 1,
-                      color: cor,
+                      color: Colors.black,
                       fontWeight: FontWeight.bold),
                 ),
-              )
             ],
           ),
         ),

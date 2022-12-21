@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:portalsped/Models/clientes_model.dart';
 import 'package:portalsped/Models/contadores_model.dart';
+import 'package:portalsped/Widgets/ListaDocumentos.dart';
 import 'package:portalsped/Widgets/appBar.dart';
 import 'package:portalsped/Widgets/lista_clientes.dart';
 
@@ -27,18 +29,20 @@ class _ClientesPage extends State<ClientesPage> {
                   borderRadius: BorderRadius.circular(20)),
               elevation: 20,
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Card(
-                          elevation: 20,
-                          child: ListaClientes(contador: widget.contador),
-                        ),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Card(
+                        elevation: 20,
+                        child: ListaClientes(contador: widget.contador),
                       ),
-                    )
-                  ]),
+                    ),
+                  ),
+                  ListaDocumentos(cliente: ClientesModel(nome: 'Fulano'))
+                ],
+              ),
             ),
           ),
         ],

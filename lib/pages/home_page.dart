@@ -1,7 +1,5 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:portalsped/Classes/ContadoresCard.dart';
-import 'package:portalsped/Models/contadores_model.dart';
 import 'package:portalsped/widgets/appBar.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -51,7 +49,7 @@ class _MyHomePage extends State<PaginaInicial> {
   @override
   Widget build(BuildContext context) {
     return carregando
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : GridView(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
@@ -59,8 +57,8 @@ class _MyHomePage extends State<PaginaInicial> {
               crossAxisSpacing: 10,
               childAspectRatio: 2.0,
             ),
-            children: contadores,
             padding: EdgeInsets.all(padding),
+            children: contadores,
           );
   }
 }

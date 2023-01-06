@@ -29,7 +29,7 @@ class PaginaInicial extends StatefulWidget {
 }
 
 class _MyHomePage extends State<PaginaInicial> {
-  final double padding = 20;
+  final double padding = 10;
   bool carregando = true;
   List<Widget> contadores = [];
 
@@ -43,7 +43,7 @@ class _MyHomePage extends State<PaginaInicial> {
   }
 
   carregandoListaWidget() async {
-    contadores = await ContadoresCard.createListaContadores();
+    contadores = await ContadoresCard.createListaContadores(context);
   }
 
   @override
@@ -57,7 +57,6 @@ class _MyHomePage extends State<PaginaInicial> {
               crossAxisSpacing: 10,
               childAspectRatio: 2.0,
             ),
-            padding: EdgeInsets.all(padding),
             children: contadores,
           );
   }

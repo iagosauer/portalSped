@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:portalsped/Models/clientes_model.dart';
 import 'package:portalsped/Models/contadores_model.dart';
@@ -6,15 +8,11 @@ import 'package:portalsped/Widgets/appBar.dart';
 import 'package:portalsped/Widgets/lista_clientes.dart';
 
 // ignore: must_be_immutable
-class ClientesPage extends StatefulWidget {
+class ClientesPage extends StatelessWidget {
   ContadoresModel contador;
   ClientesPage({super.key, required this.contador});
-
-  @override
-  State<ClientesPage> createState() => _ClientesPage();
-}
-
-class _ClientesPage extends State<ClientesPage> {
+  ValueNotifier<ClientesModel> clienteSelecionado =
+      ValueNotifier<ClientesModel>(ClientesModel(nome: ''));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,11 +34,18 @@ class _ClientesPage extends State<ClientesPage> {
                     child: Center(
                       child: Card(
                         elevation: 20,
-                        child: ListaClientes(contador: widget.contador),
+                        child: ListaClientes(
+                            contador: contador,
+                            clienteSelecionado: clienteSelecionado),
                       ),
                     ),
                   ),
-                  ListaDocumentos(cliente: ClientesModel(nome: 'Fulano'))
+                  ValueListenableBuilder<ClientesModel>(
+                      valueListenable: clienteSelecionado,
+                      builder: ((context, value, _) {
+                        log(value.nome);
+                        return ListaDocumentos(clienteSelecionado: value);
+                      })),
                 ],
               ),
             ),

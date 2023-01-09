@@ -64,7 +64,20 @@ class AdicionaValores{
       clientes.add(bebidasFavoDeMel);
       clientes.add(clinicaOdonto);
     }
-
+    /*
+    clientes.add(ClientesModel(nome: 'Exemplo 01',
+    filhos: []));
+    clientes.add(ClientesModel(nome: 'Exemplo 02',
+    filhos: []));
+        clientes.add(ClientesModel(nome: 'Exemplo 03',
+    filhos: []));
+        clientes.add(ClientesModel(nome: 'Exemplo 04',
+    filhos: []));
+        clientes.add(ClientesModel(nome: 'Exemplo 05',
+    filhos: []));
+        clientes.add(ClientesModel(nome: 'Exemplo 06',
+    filhos: []));
+*/
     return clientes;
   }
 
@@ -121,7 +134,7 @@ class AdicionaValores{
       pai: avo,
        tipoDocumento: TipoDocumento.back);
       DocumentosModel nfe = DocumentosModel(nome: 'NFe', tipoDocumento: TipoDocumento.pasta);
-      nfe.filhos = getArquivosNFe(pai, nfe);
+      nfe.filhos = getArquivosNFe(pai as DocumentosModel, nfe);
       DocumentosModel nfc = DocumentosModel(nome: 'NFc', tipoDocumento: TipoDocumento.pasta);
       nfc.filhos = getArquivosNFC(pai, nfc);
      documentos.add(back);
@@ -131,7 +144,7 @@ class AdicionaValores{
 
   }
 
-  static getArquivosNFC(Object avo, DocumentosModel pai)
+  static getArquivosNFC(DocumentosModel avo, DocumentosModel pai)
   {
     List<DocumentosModel> documentos = [];
     documentos.add(
@@ -139,13 +152,13 @@ class AdicionaValores{
     );
     for (int i=0; i < 10; i++)
     {
-      documentos.add(DocumentosModel(nome: 'NFC ${i+1} do mes ${pai.nome}',
+      documentos.add(DocumentosModel(nome: 'NFC ${i+1} do mes ${avo.nome}',
        tipoDocumento: TipoDocumento.documento));
     }
     return documentos;
   }
 
-  static getArquivosNFe(Object avo, DocumentosModel pai)
+  static getArquivosNFe(DocumentosModel avo, DocumentosModel pai)
   {
     List<DocumentosModel> documentos = [];
     documentos.add(
@@ -153,7 +166,7 @@ class AdicionaValores{
     );
     for (int i=0; i < 10; i++)
     {
-      documentos.add(DocumentosModel(nome: 'NFe ${i+1} do mes ${pai.nome}',
+      documentos.add(DocumentosModel(nome: 'NFe ${i+1} do mes ${avo.nome}',
        tipoDocumento: TipoDocumento.documento));
     }
     return documentos;

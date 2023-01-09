@@ -11,7 +11,7 @@ class ContadoresCard {
 
     for (int i = 0; i < contadores.length; i++) {
       lista.add(
-        CardContadores(indice: i, contador: contadores[i]).build(context),
+        CardContadores(indice: i, contador: contadores[i])
       );
     }
     return lista;

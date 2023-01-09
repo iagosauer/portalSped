@@ -1,14 +1,12 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portalsped/Models/clientes_model.dart';
 import 'package:portalsped/Models/documentos_model.dart';
-import 'package:portalsped/Repositories/documentos_repository.dart';
 
 class ListaDocumentos extends StatefulWidget {
-  ListaDocumentos({super.key, required this.cliente});
-  ClientesModel cliente;
+  ListaDocumentos({super.key, required this.clienteSelecionado});
+  ClientesModel clienteSelecionado;
 
   @override
   State<ListaDocumentos> createState() => _ListaDocumentosState();
@@ -16,66 +14,101 @@ class ListaDocumentos extends StatefulWidget {
 
 class _ListaDocumentosState extends State<ListaDocumentos> {
   bool carregando = true;
+  bool aux = true;
   List<DocumentosModel> documentos = [];
+  ValueNotifier<bool> flag = ValueNotifier<bool>(true);
   initState() {
-    iniciaTabela();
+    super.initState();
   }
 
   iniciaTabela() async {
-    documentos =
-        await DocumentosRepository.fetchDocumentos(cliente: widget.cliente);
+
+    if (widget.clienteSelecionado.nome != '' && aux) {
+      documentos = widget.clienteSelecionado.filhos!;
+    }
+    /* await DocumentosRepository.fetchDocumentos(cliente: widget.cliente);*/
     setState(() {
       carregando = false;
+      aux = true;
     });
+
   }
+
 
   @override
   Widget build(BuildContext context) {
+    iniciaTabela();
     return Expanded(
       child: Card(
-        child: carregando
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : SingleChildScrollView(
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: documentos.length,
-                    itemBuilder: (_, int index) {
-                      if(index == 0)
-                      {
-                        return Card(
-                          child: ListTile(
-                            onTap: () {
-                              log('back');
-                            },
-                            leading: Icon(Icons.arrow_back),
-                            title: Text('BACK'),
-                          ),
-                        );
-                      }
-
-                      return Card(
-                        child: ListTile(
-                          leading: Icon((documentos[index].tipoDocumento ==
-                                  TipoDocumento.pasta)
-                                  ? Icons.folder : Icons.file_download,
-                              color: const Color.fromRGBO(161, 201, 247, 1),
+          child: carregando
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : ValueListenableBuilder<bool>(
+                  valueListenable: flag,
+                  builder: (context, value, _) {
+                    return SingleChildScrollView(
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: documentos.length,
+                        itemBuilder: (_, int index) {
+                          return Card(
+                            child: ListTile(
+                              leading: Icon(
+                                (documentos[index].tipoDocumento ==
+                                        TipoDocumento.pasta)
+                                    ? Icons.folder
+                                    :(documentos[index].tipoDocumento ==
+                                        TipoDocumento.documento)? Icons.file_download
+                                        : Icons.arrow_back,
+                                color: const Color.fromRGBO(161, 201, 247, 1),
                               ),
-                          onTap: () => log('$index'),
-                          selectedColor: const Color.fromRGBO(161, 201, 247, 1),
-                          title: Text(documentos[index].nome,
-                          style:  GoogleFonts.prompt(
-                            letterSpacing: 2,
-                            color: Colors.black,
-                          ),
-                          ),
-                        ),
-                      );
-                    },),
-              ),
-      ),
+                              onTap: () {
+
+                                flag.value = !flag.value;
+                                if (documentos[index].tipoDocumento ==
+                                    TipoDocumento.pasta) {
+                                  flag.value = !flag.value;
+                                  setState(() {
+                                    documentos = documentos[index].filhos!;
+                                    aux = false;
+                                  });
+                                }
+                                else if(documentos[index].tipoDocumento
+                                == TipoDocumento.back
+                                )
+                                {
+                                  DocumentosModel pai;
+                                  if(documentos[index].pai is ClientesModel) 
+                                  { 
+                                    setState(() {
+                                       aux = true;
+                                    });
+                                  }
+                                  else if(documentos[index].pai is DocumentosModel)
+                                  {
+                                    pai = documentos[index].pai as DocumentosModel;
+                                    documentos = pai.filhos!;
+                                  }
+                                }
+                              },
+                              selectedColor:
+                                  const Color.fromRGBO(161, 201, 247, 1),
+                              title: Text(
+                                documentos[index].nome,
+                                style: GoogleFonts.prompt(
+                                  letterSpacing: 2,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                )),
     );
   }
 }

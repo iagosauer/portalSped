@@ -12,52 +12,41 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: Appbar.appBar(),
-      body: const PaginaInicial(),
-    );
-  }
-}
 
-class PaginaInicial extends StatefulWidget {
-  const PaginaInicial({super.key});
-
-  @override
-  State<StatefulWidget> createState() => _MyHomePage();
-}
-
-class _MyHomePage extends State<PaginaInicial> {
   final double padding = 10;
   bool carregando = true;
   List<Widget> contadores = [];
 
-  @override
-  void initState() {
-    super.initState();
-    carregandoListaWidget();
+  carregandoListaWidget() async {
+    contadores = await ContadoresCard.createListaContadores(context);
     setState(() {
       carregando = false;
     });
   }
 
-  carregandoListaWidget() async {
-    contadores = await ContadoresCard.createListaContadores(context);
+    @override
+  void initState() {
+    super.initState();
+    carregandoListaWidget();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return carregando
-        ? const CircularProgressIndicator()
-        : GridView(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 2.0,
+    return Scaffold(
+     appBar: Appbar.appBar(),
+      body: carregando
+          ? const Center(child: CircularProgressIndicator())
+          : GridView(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 2.0,
+              ),
+              children: contadores,
             ),
-            children: contadores,
-          );
+    );
   }
 }
+

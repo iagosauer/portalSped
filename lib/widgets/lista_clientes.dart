@@ -8,9 +8,10 @@ import 'package:portalsped/Models/contadores_model.dart';
 import 'package:portalsped/Repositories/clientes_repository.dart';
 
 class ListaClientes extends StatefulWidget {
-  ListaClientes({super.key, required this.contador});
+  ListaClientes({super.key, required this.contador, required this.clienteSelecionado});
 
   final ContadoresModel contador;
+  ValueNotifier<ClientesModel>? clienteSelecionado;
   @override
   State<ListaClientes> createState() => _ListaClientesState();
 }
@@ -64,11 +65,11 @@ class _ListaClientesState extends State<ListaClientes> {
     return Card(
       elevation: 20,
       borderOnForeground: true,
-      color: Color.fromARGB(255, 255, 255, 255),
+      color: const Color.fromARGB(255, 255, 255, 255),
       child: InkWell(
         hoverColor: const Color.fromARGB(255, 255, 235, 255),
-        onTap: () {
-          log(cliente.nome);
+        onTap: () { 
+          widget.clienteSelecionado?.value = cliente;
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),

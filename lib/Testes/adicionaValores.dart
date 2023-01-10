@@ -5,7 +5,7 @@ import 'package:portalsped/Models/contadores_model.dart';
 import 'package:portalsped/Models/documentos_model.dart';
 
 class AdicionaValores{
-
+ 
   static getContadores()
   {
     List<ContadoresModel> contadores = [];
@@ -146,6 +146,7 @@ class AdicionaValores{
 
   static getArquivosNFC(DocumentosModel avo, DocumentosModel pai)
   {
+     final String url = 'https://drive.google.com/uc?id=1clSjHaMrrJs_mjM9euzh75aK4olEIegq&export=download';
     List<DocumentosModel> documentos = [];
     documentos.add(
       DocumentosModel(nome: 'BACK',pai: avo, tipoDocumento: TipoDocumento.back)
@@ -153,13 +154,14 @@ class AdicionaValores{
     for (int i=0; i < 10; i++)
     {
       documentos.add(DocumentosModel(nome: 'NFC ${i+1} do mes ${avo.nome}',
-       tipoDocumento: TipoDocumento.documento));
+       tipoDocumento: TipoDocumento.documento, link: url));
     }
     return documentos;
   }
 
   static getArquivosNFe(DocumentosModel avo, DocumentosModel pai)
   {
+     final String url = 'https://drive.google.com/uc?id=1clSjHaMrrJs_mjM9euzh75aK4olEIegq&export=download';
     List<DocumentosModel> documentos = [];
     documentos.add(
       DocumentosModel(nome: 'BACK', pai: avo, tipoDocumento: TipoDocumento.back)
@@ -167,7 +169,7 @@ class AdicionaValores{
     for (int i=0; i < 10; i++)
     {
       documentos.add(DocumentosModel(nome: 'NFe ${i+1} do mes ${avo.nome}',
-       tipoDocumento: TipoDocumento.documento));
+       tipoDocumento: TipoDocumento.documento, link: url));
     }
     return documentos;
 

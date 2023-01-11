@@ -44,7 +44,7 @@ class ClientesPage extends StatelessWidget {
                       valueListenable: clienteSelecionado,
                       builder: ((context, value, _) {
                         log(value.nome);
-                        return ListaDocumentos(clienteSelecionado: value);
+                        return ListaDocumentos(clienteSelecionado: value, contador: contador,);
                       })),
                 ],
               ),

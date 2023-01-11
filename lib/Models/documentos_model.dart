@@ -1,6 +1,7 @@
 import 'dart:convert';
+import 'dart:html';
 
-enum TipoDocumento { pasta, documento, back }
+enum TipoDocumento { pasta , documento, back }
 
 class DocumentosModel {
   DocumentosModel(
@@ -8,12 +9,32 @@ class DocumentosModel {
       this.tipoDocumento,
       this.pai,
       this.filhos,
-      this.link});
+      this.setTipoDocumento,
+      this.link
+      }){
+        if(setTipoDocumento != null)
+        {
+          if(setTipoDocumento!.compareTo('TipoDocumento.back') == 0)
+          {
+            tipoDocumento = TipoDocumento.back;
+          }
+          else if(setTipoDocumento!.compareTo('TipoDocumento.pasta') == 0)
+          {
+            tipoDocumento = TipoDocumento.pasta;
+          }
+          else 
+          {
+            tipoDocumento =TipoDocumento.documento;
+          }
+        }
+      }
+  
 
   final Object? pai;
   List<DocumentosModel>? filhos;
   final String nome;
-  final TipoDocumento? tipoDocumento;
+  final String? setTipoDocumento;
+  TipoDocumento? tipoDocumento;
   String? link;
 
   Map<String, dynamic> toMap() {
@@ -26,6 +47,7 @@ class DocumentosModel {
   factory DocumentosModel.fromMap(Map<String, dynamic> map) {
     return DocumentosModel(
       nome: map['nome'] as String,
+      setTipoDocumento: map['tipo'] as String
     );
   }
 

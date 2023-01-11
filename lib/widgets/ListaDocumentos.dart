@@ -1,4 +1,7 @@
 import 'dart:developer';
+import 'package:portalsped/Classes/Utils.dart';
+import 'package:portalsped/Models/contadores_model.dart';
+import 'package:portalsped/Repositories/documentos_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,8 +9,9 @@ import 'package:portalsped/Models/clientes_model.dart';
 import 'package:portalsped/Models/documentos_model.dart';
 
 class ListaDocumentos extends StatefulWidget {
-  ListaDocumentos({super.key, required this.clienteSelecionado});
+  ListaDocumentos({super.key, required this.clienteSelecionado, required this.contador});
   ClientesModel clienteSelecionado;
+  ContadoresModel contador;
 
   @override
   State<ListaDocumentos> createState() => _ListaDocumentosState();
@@ -18,21 +22,35 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
   bool aux = true;
   List<DocumentosModel> documentos = [];
   ValueNotifier<bool> flag = ValueNotifier<bool>(true);
+  String pai = '';
   initState() {
     super.initState();
+    pai = widget.contador.nome;
   }
 
   iniciaTabela() async {
 
     if (widget.clienteSelecionado.nome != '' && aux) {
-      documentos = widget.clienteSelecionado.filhos!;
+      if(pai.compareTo(widget.contador.nome) == 0)
+      {
+        pai = '$pai/${widget.clienteSelecionado.nome}';
+      }
+      print('PAI: $pai');
+      documentos = await DocumentosRepository().fetchDocumentos(pai);
+      if(Utils.numeroBarrasString(pai)>1)
+      {
+        documentos.add(DocumentosModel(nome: 'VOLTAR', 
+        setTipoDocumento: 'TipoDocumento.back'
+        ));
+        documentos = documentos.reversed.toList();
+      }
+    setState(() {
+      aux = false;
+    });
     }
-    /* await DocumentosRepository.fetchDocumentos(cliente: widget.cliente);*/
     setState(() {
       carregando = false;
-      aux = true;
     });
-
   }
 
     _abrirUrl(String url) async {
@@ -75,32 +93,24 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
                                 color: const Color.fromRGBO(161, 201, 247, 1),
                               ),
                               onTap: () {
-
-                                flag.value = !flag.value;
                                 if (documentos[index].tipoDocumento ==
                                     TipoDocumento.pasta) {
-                                  flag.value = !flag.value;
                                   setState(() {
-                                    documentos = documentos[index].filhos!;
-                                    aux = false;
+                                    pai = '$pai/${documentos[index].nome}';
+                                    aux = true;
+                                    flag.value = !flag.value;
                                   });
                                 }
                                 else if(documentos[index].tipoDocumento
                                 == TipoDocumento.back
                                 )
                                 {
-                                  DocumentosModel pai;
-                                  if(documentos[index].pai is ClientesModel) 
-                                  { 
-                                    setState(() {
-                                       aux = true;
-                                    });
-                                  }
-                                  else if(documentos[index].pai is DocumentosModel)
-                                  {
-                                    pai = documentos[index].pai as DocumentosModel;
-                                    documentos = pai.filhos!;
-                                  }
+                                  setState(() {
+                                    pai = Utils.stringPai(pai);
+                                    aux = true;
+                                    flag.value = !flag.value;
+                                  });
+
                                 }
                                 else if(documentos[index].tipoDocumento
                                 == TipoDocumento.documento

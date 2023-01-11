@@ -1,5 +1,21 @@
 import 'package:flutter/material.dart';
+class Utils{
+    static int numeroBarrasString(String valor) {
+    int retorno = 0;
+    for (int i = 0; i < valor.length; i++) {
+      valor[i] == '/' ? retorno++ : null;
+    }
+    return retorno;
+  }
 
+  static String stringPai(String valor)
+  {
+    int x = valor.lastIndexOf('/');
+    String retorno = valor.substring(0,x);
+    return retorno;
+  }
+
+}
 MaterialColor buildMaterialColor(Color color) {
   List strengths = <double>[.05];
   Map<int, Color> swatch = {};

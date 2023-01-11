@@ -7,12 +7,11 @@ import 'package:portalsped/Repositories/contadores_repository.dart';
 class ContadoresCard {
   static createListaContadores(BuildContext context) async {
     List<Widget> lista = [];
-    final contadores = await ContadoreRepository.getContadores();
+    ContadoresRepository repository = ContadoresRepository();
+    final contadores = await repository.fetchUsuario();
 
     for (int i = 0; i < contadores.length; i++) {
-      lista.add(
-        CardContadores(indice: i, contador: contadores[i])
-      );
+      lista.add(CardContadores(indice: i, contador: contadores[i]));
     }
     return lista;
   }

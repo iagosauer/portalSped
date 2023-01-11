@@ -1,30 +1,18 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:portalsped/Models/clientes_model.dart';
-import 'package:portalsped/Models/contadores_model.dart';
+import 'package:portalsped/Classes/Valores.dart';
 
 class ClientesRepository {
-  final dio = Dio();
-
-  static Future<List<ClientesModel>> fetchClientes({
-    required ContadoresModel contador,
-  }) async {
-    List<ClientesModel> clientes = [
-      ClientesModel(nome: 'Mais Moveis'),
-      ClientesModel(nome: 'Yudisom'),
-      ClientesModel(nome: 'Madenorte'),
-      ClientesModel(nome: 'Fortaleza'),
-      ClientesModel(nome: 'Oficina 147'),
-      ClientesModel(nome: 'Portal'),
-      ClientesModel(nome: 'Mercado'),
-      ClientesModel(nome: 'Mais Moveis'),
-      ClientesModel(nome: 'Yudisom'),
-      ClientesModel(nome: 'Madenorte'),
-      ClientesModel(nome: 'Fortaleza'),
-      ClientesModel(nome: 'Oficina 147'),
-      ClientesModel(nome: 'Portal'),
-      ClientesModel(nome: 'Mercado'),
-    ];
-
-    return clientes;
+  Dio dio = Dio();
+  Future<List<ClientesModel>> fetchClientes(String escritorio) async {
+    try {
+      final response = await dio.get('${Valor.baseUrl}/$escritorio');
+      final lista = jsonDecode(response.data) as List;
+      return lista.map((e) => ClientesModel.fromMap(e)).toList();
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 }

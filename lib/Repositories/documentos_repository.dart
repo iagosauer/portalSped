@@ -1,28 +1,18 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
-import 'package:portalsped/Models/clientes_model.dart';
+import 'package:portalsped/Classes/Valores.dart';
 import 'package:portalsped/Models/documentos_model.dart';
 
 class DocumentosRepository {
-  final dio = Dio();
-
-  static Future<List<DocumentosModel>> fetchDocumentos({
-    required ClientesModel cliente,
-  }) async {
-    List<DocumentosModel> documentos=[];
-    
-    documentos.add(DocumentosModel(nome: 'Voltar', tipoDocumento: TipoDocumento.back));
-    for(int i = 0; i < 30; i++)
-    {
-      if(i%2 == 0)
-      {
-        documentos.add(DocumentosModel(nome: 'Documento $i', tipoDocumento: TipoDocumento.documento));
-      }
-      else
-      {
-      documentos.add(DocumentosModel(nome: 'Documento $i', tipoDocumento: TipoDocumento.pasta));
-      }
+  Dio dio = Dio();
+  Future<List<DocumentosModel>> fetchClientes(String escritorio) async {
+    try {
+      final response = await dio.get('${Valor.baseUrl}/$escritorio');
+      final lista = JsonDecoder(response.data) as List;
+      return lista.map((e) => DocumentosModel.fromMap(e)).toList();
+    } catch (e) {
+      throw Exception(e);
     }
-
-    return documentos;
   }
 }

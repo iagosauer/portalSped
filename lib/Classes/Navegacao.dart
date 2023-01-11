@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:portalsped/Models/contadores_model.dart';
 import 'package:portalsped/Pages/clientes_page.dart';
+import 'package:portalsped/Repositories/clientes_repository.dart';
 import 'package:portalsped/Repositories/usuario_repository.dart';
 import 'package:portalsped/Widgets/janela_Dialog.dart';
 import 'package:portalsped/pages/login_page.dart';
@@ -24,25 +24,19 @@ class Navegacao {
   }
 
   static telaClientes(
-    {required ContadoresModel usuario,
-    required String senha,
-    required BuildContext context }
-  ) async
-  {
-    var retorno = UsuarioRepository.fetchLogin(login: usuario.nome, senha: senha);
-    if(await retorno)
-    {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => ClientesPage(contador: usuario),
-        )
-      );
+      {required ContadoresModel usuario,
+      required String senha,
+      required BuildContext context}) async {
+    var retorno =
+        true; // UsuarioRepository.fetchLogin(login: usuario.nome, senha: senha);
+    if (await retorno) {
+      usuario.clientes = await ClientesRepository().fetchClientes(usuario.nome);
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => ClientesPage(contador: usuario),
+      ));
+    } else {
+      JanelaDialog(mensagem: 'Senha Incorreta', mensagemTrue: 'OK')
+          .build(context);
     }
-    else
-    {
-      JanelaDialog(mensagem: 'Senha Incorreta', mensagemTrue: 'OK').build(context);
-    }
-
-
   }
 }

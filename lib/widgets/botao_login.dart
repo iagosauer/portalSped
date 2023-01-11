@@ -9,9 +9,11 @@ class BotaoLogin extends StatefulWidget {
   TextEditingController controler;
   final Size size;
   ContadoresModel contador;
-  BotaoLogin({Key? key, required this.controler,
-   required this.size,
-   required this.contador})
+  BotaoLogin(
+      {Key? key,
+      required this.controler,
+      required this.size,
+      required this.contador})
       : super(key: key);
 
   @override
@@ -50,8 +52,10 @@ class _BotaoLoginState extends State<BotaoLogin> {
                   ),
                 ),
                 onPressed: () async {
-                  await Navegacao.telaClientes(usuario: widget.contador,
-                   senha: widget.controler.text, context: context);
+                  await Navegacao.telaClientes(
+                      usuario: widget.contador,
+                      senha: widget.controler.text,
+                      context: context);
                 },
               ),
             ),

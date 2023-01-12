@@ -48,10 +48,6 @@ class _ListaClientesState extends State<ListaClientes> {
   iniciaLista() async {
 
     List<ClientesModel> clientes = widget.contador.clientes!;
-    /*
-    List<ClientesModel> clientes =
-        await ClientesRepository.fetchClientes(contador: widget.contador);
-        */
     for (int i = 0; i < clientes.length; i++) {
       clientesWidget.add(pastaCliente(clientes[i]));
     }

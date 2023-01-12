@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:portalsped/Classes/Utils.dart';
 import 'package:portalsped/Models/contadores_model.dart';
 import 'package:portalsped/Repositories/documentos_repository.dart';
@@ -9,137 +8,133 @@ import 'package:portalsped/Models/clientes_model.dart';
 import 'package:portalsped/Models/documentos_model.dart';
 
 class ListaDocumentos extends StatefulWidget {
-  ListaDocumentos({super.key, required this.clienteSelecionado, required this.contador});
+  ListaDocumentos(
+      {super.key, required this.clienteSelecionado, required this.contador}) {
+    pai = contador.nome;
+  }
+
   ClientesModel clienteSelecionado;
   ContadoresModel contador;
+  String pai = '';
+  ValueNotifier<bool> flag = ValueNotifier<bool>(true);
+  bool aux = true;
+  bool carregando = true;
 
   @override
   State<ListaDocumentos> createState() => _ListaDocumentosState();
 }
 
 class _ListaDocumentosState extends State<ListaDocumentos> {
-  bool carregando = true;
-  bool aux = true;
   List<DocumentosModel> documentos = [];
-  ValueNotifier<bool> flag = ValueNotifier<bool>(true);
-  String pai = '';
-  initState() {
-    super.initState();
-    pai = widget.contador.nome;
-  }
 
   iniciaTabela() async {
-
-    if (widget.clienteSelecionado.nome != '' && aux) {
-      if(pai.compareTo(widget.contador.nome) == 0)
-      {
-        pai = '$pai/${widget.clienteSelecionado.nome}';
+    if (widget.clienteSelecionado.nome != '' && widget.aux) {
+      if (widget.pai.compareTo(widget.contador.nome) == 0) {
+        widget.pai = '${widget.pai}/${widget.clienteSelecionado.nome}';
       }
-      print('PAI: $pai');
-      documentos = await DocumentosRepository().fetchDocumentos(pai);
-      if(Utils.numeroBarrasString(pai)>1)
-      {
-        documentos.add(DocumentosModel(nome: 'VOLTAR', 
-        setTipoDocumento: 'TipoDocumento.back'
-        ));
+      documentos = await DocumentosRepository().fetchDocumentos(widget.pai);
+      if (Utils.numeroBarrasString(widget.pai) > 1) {
+        documentos.add(DocumentosModel(
+            nome: 'VOLTAR', setTipoDocumento: 'TipoDocumento.back'));
         documentos = documentos.reversed.toList();
       }
-    setState(() {
-      aux = false;
-    });
+      setState(
+        () {
+          widget.aux = false;
+        },
+      );
     }
     setState(() {
-      carregando = false;
+      widget.carregando = false;
+      widget.flag.value = false;
     });
   }
 
-    _abrirUrl(String url) async {
-      // ignore: deprecated_member_use
-      if (await canLaunch(url)) {
-        // ignore: deprecated_member_use
-        await launch(url);
-      } else {
-        throw 'Could not launch $url';
-      }
-    }
+  download(String documento)
+  async {
+    bool download = await DocumentosRepository().download(widget.pai+'/'+documento);
+
+  }
 
   @override
   Widget build(BuildContext context) {
     iniciaTabela();
     return Expanded(
       child: Card(
-          child: carregando
+          child: widget.carregando
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : ValueListenableBuilder<bool>(
-                  valueListenable: flag,
+                  valueListenable: widget.flag,
                   builder: (context, value, _) {
-                    return SingleChildScrollView(
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: documentos.length,
-                        itemBuilder: (_, int index) {
-                          return Card(
-                            child: ListTile(
-                              leading: Icon(
-                                (documentos[index].tipoDocumento ==
-                                        TipoDocumento.pasta)
-                                    ? Icons.folder
-                                    :(documentos[index].tipoDocumento ==
-                                        TipoDocumento.documento)? Icons.file_download
-                                        : Icons.arrow_back,
-                                color: const Color.fromRGBO(161, 201, 247, 1),
-                              ),
-                              onTap: () {
-                                if (documentos[index].tipoDocumento ==
-                                    TipoDocumento.pasta) {
-                                  setState(() {
-                                    pai = '$pai/${documentos[index].nome}';
-                                    aux = true;
-                                    flag.value = !flag.value;
-                                  });
-                                }
-                                else if(documentos[index].tipoDocumento
-                                == TipoDocumento.back
-                                )
-                                {
-                                  setState(() {
-                                    pai = Utils.stringPai(pai);
-                                    aux = true;
-                                    flag.value = !flag.value;
-                                  });
-
-                                }
-                                else if(documentos[index].tipoDocumento
-                                == TipoDocumento.documento
-                                )
-                                {
-                                  if(documentos[index].link != null)
-                                  {
-                                    _abrirUrl(documentos[index].link!);
-                                  }
-                                  else
-                                  {
-                                    log('nulo');
-                                  }
-                                  
-                                }
-                              },
-                              selectedColor:
-                                  const Color.fromRGBO(161, 201, 247, 1),
-                              title: Text(
-                                documentos[index].nome,
-                                style: GoogleFonts.prompt(
-                                  letterSpacing: 2,
-                                  color: Colors.black,
+                    return Column(
+                      children: [
+                        Text(widget.clienteSelecionado.nome),
+                        SingleChildScrollView(
+                          child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: documentos.length,
+                            itemBuilder: (_, int index) {
+                              return Card(
+                                child: ListTile(
+                                  leading: Icon(
+                                    (documentos[index].tipoDocumento ==
+                                            TipoDocumento.pasta)
+                                        ? Icons.folder
+                                        : (documentos[index].tipoDocumento ==
+                                                TipoDocumento.documento)
+                                            ? Icons.file_download
+                                            : Icons.arrow_back,
+                                    color:
+                                        const Color.fromRGBO(161, 201, 247, 1),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      widget.carregando = true;
+                                      widget.flag.value = !widget.flag.value;
+                                    });
+                                    if (documentos[index].tipoDocumento ==
+                                        TipoDocumento.pasta) {
+                                      setState(() {
+                                        widget.pai =
+                                            '${widget.pai}/${documentos[index].nome}';
+                                        widget.aux = true;
+                                      });
+                                    } else if (documentos[index]
+                                            .tipoDocumento ==
+                                        TipoDocumento.back) {
+                                      setState(
+                                        () {
+                                          widget.pai =
+                                              Utils.stringPai(widget.pai);
+                                          widget.aux = true;
+                                          widget.flag.value =
+                                              !widget.flag.value;
+                                        },
+                                      );
+                                    } else if (documentos[index]
+                                            .tipoDocumento ==
+                                        TipoDocumento.documento) {
+                                          download(documentos[index].nome);
+                                    }
+                                  },
+                                  selectedColor:
+                                      const Color.fromRGBO(161, 201, 247, 1),
+                                  title: Text(
+                                    documentos[index].nome,
+                                    style: GoogleFonts.prompt(
+                                      letterSpacing: 2,
+                                      color: Colors.black,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     );
                   },
                 )),

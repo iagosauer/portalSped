@@ -52,7 +52,7 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
 
   download(String documento)
   async {
-    bool download = await DocumentosRepository().download(widget.pai+'/'+documento);
+    bool download = await DocumentosRepository().downloads(widget.pai+'/'+documento);
 
   }
 

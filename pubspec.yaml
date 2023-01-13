@@ -41,6 +41,7 @@ dependencies:
   google_fonts: ^3.0.1
   ftpconnect: ^2.0.2
   url_launcher: ^6.1.7
+  shelf_multipart: ^1.0.0
 
 dev_dependencies:
   flutter_test:

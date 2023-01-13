@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:html' as html;
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:portalsped/Classes/Valores.dart';
 import 'package:portalsped/Models/documentos_model.dart';
 
@@ -17,31 +19,19 @@ class DocumentosRepository {
     }
   }
 
-  Future<bool> download(String pai) async {
-    final response = await dio
-        .get('${Valor.baseUrl}/$pai', queryParameters: {'download': 'true'});
-    if (response.statusCode == 200) {
-      var socket = await Socket.connect(Valor.baseUrl, 2714);
-      const Duration(seconds: 3);
-      try {
-        print("Connected to:"
-            '${socket.remoteAddress.address}:${socket.remotePort}');
-        socket.write('Send Data');
 
-        var file = File('1_received.zip').openWrite();
-        try {
-          await socket.map(toIntList).pipe(file);
-        } finally {
-          file.close();
-        }
-      } finally {
-        socket.destroy();
-      }
-    }
+  Future<bool> downloads(String pai) async {
+    final response = await dio
+        .get('${Valor.baseUrlDownload}/$pai', queryParameters: {'download': 'true'});
+    List<int> list = response.data.codeUnits;
+    Uint8List bytes = Uint8List.fromList(list);
+    final content = base64Encode(bytes);
+    final anchor = html.AnchorElement(
+        href: "data:application/octet-stream;charset=utf-16le;base64,$content")
+      ..setAttribute("download", pai.substring(pai.lastIndexOf('/')))
+      ..click();
+    if (response.statusCode == 200) {}
     return true;
   }
-
-  List<int> toIntList(Uint8List source) {
-    return List.from(source);
-  }
 }
+

@@ -21,11 +21,11 @@ class DocumentosRepository {
 
 
   Future<bool> downloads(String pai) async {
-    final response = await dio
-        .get('${Valor.baseUrlDownload}/$pai', queryParameters: {'download': 'true'});
-    List<int> list = response.data.codeUnits;
-    Uint8List bytes = Uint8List.fromList(list);
-    final content = base64Encode(bytes);
+    Response response = await dio
+        .get('${Valor.baseUrlDownload}/$pai',
+        options: Options(responseType: ResponseType.bytes),
+         queryParameters: {'download': 'true'});
+    final content = base64Encode(response.data);
     final anchor = html.AnchorElement(
         href: "data:application/octet-stream;charset=utf-16le;base64,$content")
       ..setAttribute("download", pai.substring(pai.lastIndexOf('/')))
@@ -34,4 +34,3 @@ class DocumentosRepository {
     return true;
   }
 }
-

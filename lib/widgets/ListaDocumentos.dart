@@ -50,10 +50,9 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
     });
   }
 
-  download(String documento)
-  async {
-    bool download = await DocumentosRepository().downloads(widget.pai+'/'+documento);
-
+  download(String documento) async {
+    bool download =
+        await DocumentosRepository().downloads(widget.pai + '/' + documento);
   }
 
   @override
@@ -70,7 +69,11 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
                   builder: (context, value, _) {
                     return Column(
                       children: [
-                        Text(widget.clienteSelecionado.nome),
+                        Text(
+                          widget.clienteSelecionado.nome,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 25),
+                        ),
                         SingleChildScrollView(
                           child: ListView.builder(
                             scrollDirection: Axis.vertical,
@@ -117,7 +120,7 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
                                     } else if (documentos[index]
                                             .tipoDocumento ==
                                         TipoDocumento.documento) {
-                                          download(documentos[index].nome);
+                                      download(documentos[index].nome);
                                     }
                                   },
                                   selectedColor:

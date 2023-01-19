@@ -11,7 +11,7 @@ class UsuarioRepository {
   Future<List<ClientesModel>> fetchUsuario() async {
     List<ContadoresModel> retorno;
     try {
-      final response = await dio.get('${Valor.baseUrl}');
+      final response = await dio.get('${Valor.baseUrl}/contadores');
       final lista = jsonDecode(response.data) as List;
       return lista.map((e) => ClientesModel.fromMap(e)).toList();
     } catch (e) {

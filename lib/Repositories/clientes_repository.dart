@@ -12,7 +12,7 @@ class ClientesRepository {
     if(await _verificaSenha(escritorio, senha))
     {
       final response = await dio
-        .get('${Valor.baseUrl}/$escritorio');
+        .get('${Valor.baseUrl}/contadores/$escritorio');
     if (response.statusCode == 200) {
       final lista = jsonDecode(response.data) as List;
       return lista.map((e) => ClientesModel.fromMap(e)).toList();
@@ -25,7 +25,7 @@ class ClientesRepository {
   _verificaSenha(String escritorio, String senha)
   async {
     final response = await dio
-        .get('${Valor.baseUrl}/$escritorio', queryParameters: {'pass': senha});
+        .get('${Valor.baseUrl}/contadores/$escritorio', queryParameters: {'pass': senha});
     if(response.data == 'true')
     {
       return true;

@@ -10,34 +10,11 @@ class ContadoresRepository {
   Future<List<ContadoresModel>> fetchUsuario() async {
     List<ContadoresModel> retorno;
     try {
-      final response = await dio.get('${Valor.baseUrl}');
+      final response = await dio.get('${Valor.baseUrl}/contadores');
       final lista = jsonDecode(response.data) as List;
       return lista.map((e) => ContadoresModel.fromMap(e)).toList();
     } catch (e) {
       throw Exception(e);
     }
   }
-/*
-  Future<bool> fetchLogin(
-      {required String login,
-      required String senha,
-      }) async {
-    try {
-      final response = await dio.post(
-        '${Valor.baseUrl}/login',
-        data: _loginToMap(login, senha),
-      );
-      return response.statusCode == 200;
-    } catch (e) {
-      return false;
-    }
-  }
-
-    Map<String, dynamic> _loginToMap(
-     String login, String senha) {
-      return <String, dynamic>{
-      'login': login,
-      'senha': senha,
-      };
-     }*/
 }

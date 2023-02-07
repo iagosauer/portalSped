@@ -2,14 +2,12 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:portalsped/Models/clientes_model.dart';
-import 'package:portalsped/Models/contadores_model.dart';
 import 'package:portalsped/Classes/Valores.dart';
 
 class UsuarioRepository {
   final dio = Dio();
 
   Future<List<ClientesModel>> fetchUsuario() async {
-    List<ContadoresModel> retorno;
     try {
       final response = await dio.get('${Valor.baseUrl}/contadores');
       final lista = jsonDecode(response.data) as List;

@@ -22,16 +22,6 @@ class BotaoLogin extends StatefulWidget {
 
 class _BotaoLoginState extends State<BotaoLogin> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: widget.size.height * 0.1,
@@ -43,7 +33,6 @@ class _BotaoLoginState extends State<BotaoLogin> {
             Expanded(
               child: ElevatedButton(
                 style: ButtonStyle(elevation: MaterialStateProperty.all(10)),
-                // ignore: prefer_const_literals_to_create_immutables
                 child: Center(
                   child: Text(
                     'Entrar',

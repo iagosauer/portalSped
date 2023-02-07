@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:portalsped/Classes/Navegacao.dart';
 import 'package:portalsped/Models/contadores_model.dart';
@@ -24,8 +22,11 @@ class CustomTextFieldPassword extends StatelessWidget {
             child: TextField(
               autofocus: true,
               onSubmitted: (value) async {
-                  await Navegacao.telaClientes(usuario: contador,
-                   senha: controler.text, context: context);
+                await Navegacao.telaClientes(
+                  usuario: contador,
+                  senha: controler.text,
+                  context: context,
+                );
               },
               keyboardType: TextInputType.text,
               obscureText: true,

@@ -8,7 +8,6 @@ class ContadoresRepository {
   final dio = Dio();
 
   Future<List<ContadoresModel>> fetchUsuario() async {
-    List<ContadoresModel> retorno;
     try {
       final response = await dio.get('${Valor.baseUrl}/contadores');
       final lista = jsonDecode(response.data) as List;

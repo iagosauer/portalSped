@@ -42,6 +42,7 @@ dependencies:
   ftpconnect: ^2.0.2
   url_launcher: ^6.1.7
   shelf_multipart: ^1.0.0
+  shared_preferences: ^2.0.17
 
 dev_dependencies:
   flutter_test:

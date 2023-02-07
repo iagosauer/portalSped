@@ -13,11 +13,7 @@ class Navegacao {
       required Color cor}) {
     return Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => LoginPage(
-          indice: indice,
-          contador: contador,
-          cor: cor,
-        ),
+        builder: (context) => const LoginPage(),
       ),
     );
   }
@@ -26,7 +22,8 @@ class Navegacao {
       {required ContadoresModel usuario,
       required String senha,
       required BuildContext context}) async {
-    usuario.clientes = await ClientesRepository().fetchClientes(usuario.nome, senha);
+    usuario.clientes =
+        await ClientesRepository().fetchClientes(usuario.nome, senha);
 
     // ignore: prefer_is_not_empty
     if (!(usuario.clientes!.isEmpty)) {

@@ -8,29 +8,30 @@ class ClientesRepository {
   Dio dio = Dio();
   Future<List<ClientesModel>> fetchClientes(
       String escritorio, String senha) async {
-
-    if(await _verificaSenha(escritorio, senha))
-    {
-      final response = await dio
-        .get('${Valor.baseUrl}/contadores/$escritorio');
-    if (response.statusCode == 200) {
-      final lista = jsonDecode(response.data) as List;
-      return lista.map((e) => ClientesModel.fromMap(e)).toList();
+    try {
+      final response = await dio.get('${Valor.baseUrl}/contadores/$escritorio');
+      if (response.statusCode == 200) {
+        final lista = jsonDecode(response.data) as List;
+        return lista.map((e) => ClientesModel.fromMap(e)).toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      throw Exception(e);
     }
-    }    
-
-    return [];
   }
 
-  _verificaSenha(String escritorio, String senha)
-  async {
-    final response = await dio
-        .get('${Valor.baseUrl}/contadores/$escritorio', queryParameters: {'pass': senha});
-    if(response.data == 'true')
-    {
-      return true;
+  Future<bool> _verificaSenha(String escritorio, String senha) async {
+    try {
+      final response = await dio.get(
+        '${Valor.baseUrl}/contadores/$escritorio',
+        queryParameters: {
+          'pass': senha,
+        },
+      );
+      return (response.data as String) == 'true';
+    } catch (e) {
+      throw Exception(e);
     }
-    return false;
-
   }
 }

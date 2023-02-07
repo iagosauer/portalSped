@@ -1,12 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:portalsped/Classes/MyCustomBehavior.dart';
 import 'package:portalsped/Classes/Utils.dart';
 import 'package:portalsped/Models/contadores_model.dart';
 import 'package:portalsped/pages/clientes_page.dart';
-import 'package:portalsped/pages/home_page.dart';
 import 'package:portalsped/pages/login_page.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

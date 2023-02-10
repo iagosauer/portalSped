@@ -1,24 +1,27 @@
 import 'dart:convert';
-
 import 'package:portalsped/Models/clientes_model.dart';
-import 'package:portalsped/widgets/lista_clientes.dart';
+import 'package:portalsped/Repositories/usuario_repository.dart';
 
 class ContadoresModel {
   final String nome;
+  final String? pasta;
+  final String? senha;
   List<ClientesModel>? clientes;
 
-  ContadoresModel({required this.nome, this.clientes});
+  ContadoresModel({required this.nome, this.clientes, this.pasta, this.senha});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'nome': nome,
       'clientes': clientes,
+      'senha' : senha
     };
   }
 
   factory ContadoresModel.fromMap(Map<String, dynamic> map) {
     return ContadoresModel(
       nome: map['nome'] as String,
+      senha: map['senha'] as String
     );
   }
 
@@ -26,4 +29,5 @@ class ContadoresModel {
 
   factory ContadoresModel.fromJson(String source) =>
       ContadoresModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
 }

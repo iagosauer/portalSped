@@ -1,24 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:portalsped/Classes/Navegacao.dart';
+import 'package:portalsped/Models/contadores_model.dart';
+import 'package:portalsped/Repositories/usuario_repository.dart';
+import 'package:portalsped/Widgets/janela_Dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
     super.key,
   });
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late SharedPreferences prefs;
+  var check = false;
+  final controlerSenha = TextEditingController(text: '');
+  final controlerUsuario = TextEditingController(text: '');
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _init();
+  }
+
+  _init() async {
+    prefs = await SharedPreferences.getInstance();
+    controlerUsuario.text = prefs.getString('user') ?? '';
+    controlerSenha.text = prefs.getString('pass') ?? '' ;
+    check = prefs.getBool('remember') ?? false ;
+    setState(() {
+      
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final controler = TextEditingController(text: '');
+
 
     return Scaffold(
       body: Center(
         child: Container(
           margin: const EdgeInsets.all(20),
           height: 400,
+          width: 400,
           child: Column(
             children: [
               SizedBox(
@@ -30,6 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 20,
               ),
               TextFormField(
+                controller: controlerUsuario,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   label: Text('Usuário'),
@@ -39,8 +69,10 @@ class _LoginPageState extends State<LoginPage> {
                 height: 20,
               ),
               TextFormField(
+                onFieldSubmitted: (value) =>
+                    _botaoLogin(controlerUsuario.text, controlerSenha.text),
                 obscureText: true,
-                controller: controler,
+                controller: controlerSenha,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   label: Text('Senha'),
@@ -49,11 +81,36 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 20,
               ),
+              CheckboxListTile(
+                title: const Text('Lembrar'),
+                  value: check,
+                  onChanged: (value) {
+                    setState(() {
+                      check = !check;
+                    });
+                  }),
+              const SizedBox(
+                height: 20,
+              ),
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if(check)
+                    {
+                      prefs.setString('user', controlerUsuario.text);
+                      prefs.setString('pass', controlerSenha.text);
+                      prefs.setBool('remember', check);
+                    }
+                    else
+                    {
+                      prefs.remove('user');
+                      prefs.remove('pass');
+                      prefs.remove('remember');
+                    }
+                    _botaoLogin(controlerUsuario.text, controlerSenha.text);
+                  },
                   child: const Text('Entrar'),
                 ),
               ),
@@ -62,5 +119,25 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  _botaoLogin(String usuario, String senha) async {
+    var contador =
+        await UsuarioRepository().VerificaLogin(usuario, senha, context);
+    if (contador != null) {
+      if(contador.nome.compareTo('portalAdmin') == 0)
+      {
+          Navigator.of(context).pushNamed('/manutencao', arguments: contador);
+      }
+      else
+      {
+        Navigator.of(context).pushNamed('/clientes', arguments: contador);
+      }
+      
+    } else {
+      // ignore: use_build_context_synchronously
+      JanelaDialog(mensagem: 'Usuário ou senha incorreta', mensagemTrue: 'OK')
+          .build(context);
+    }
   }
 }

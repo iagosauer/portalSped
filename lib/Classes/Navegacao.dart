@@ -28,9 +28,7 @@ class Navegacao {
     // ignore: prefer_is_not_empty
     if (!(usuario.clientes!.isEmpty)) {
       // ignore: use_build_context_synchronously
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => ClientesPage(contador: usuario),
-      ));
+      Navigator.of(context).pushNamed('/clientes');
     } else {
       // ignore: use_build_context_synchronously
       JanelaDialog(mensagem: 'Senha Incorreta', mensagemTrue: 'OK')

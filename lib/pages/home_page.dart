@@ -34,7 +34,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: Appbar.appBar(),
       body: carregando
           ? const Center(child: CircularProgressIndicator())
           : GridView(

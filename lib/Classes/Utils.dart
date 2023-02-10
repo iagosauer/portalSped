@@ -1,6 +1,38 @@
 import 'package:flutter/material.dart';
 class Utils{
-    static int numeroBarrasString(String valor) {
+  static String FormataTextoQuebraDeLinhas(String cliente, int numeroCaracteres)
+  {
+    String retorno = '';
+    for(int i = 0; i<cliente.length; i++)
+    {
+      if((i%numeroCaracteres == 0)&& (i!=0))
+      {
+        retorno = '$retorno\n';
+      }
+      retorno = retorno + cliente[i];
+    }
+    return retorno;
+  }
+
+  static int numerosDeLinhasTotal(List<String> lista, int numeroCaracteres)
+  {
+    int retorno = 0;
+    int aux = lista[0].length;
+
+    for(String valor in lista)
+    {
+      if(valor.length > aux)
+      {
+        aux = valor.length;
+        retorno = (aux/numeroCaracteres).ceil().toInt();
+      }
+    }
+
+    return retorno;
+  }
+
+
+  static int numeroBarrasString(String valor) {
     int retorno = 0;
     for (int i = 0; i < valor.length; i++) {
       valor[i] == '/' ? retorno++ : null;

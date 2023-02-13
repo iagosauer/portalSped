@@ -20,6 +20,59 @@ class ContadoresRepository {
     }
   }
 
+    Future<List<String>> fetchPastas() async {
+    try {
+      final response = await dio.get('${Valor.baseUrl}/contadores');
+      final lista = jsonDecode(response.data) as List;
+      return lista.map((e) => e['nome'] as String).toList();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+    static Future<bool> adicionaContador(
+    String usuario,
+    String senha,
+    String pasta,
+  ) async
+  { 
+    bool retorno = true;
+    try{
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+      final snapshot = firestore.doc(usuario);
+      snapshot.set({'usuario': usuario,
+      'senha': senha,
+      'pasta' : pasta});
+    }catch (e)
+    {
+      retorno = false;
+      JanelaDialog(mensagem: 'Não foi possível realizar o cadastro: $e'
+      , mensagemTrue: 'ok');
+    }
+    return retorno;
+  }
+
+  static Future<bool> updateContador(
+    String usuario,
+    String senha,
+    String pasta,
+  ) async
+  { 
+    bool retorno = true;
+    try{
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+      final snapshot = firestore.collection('usuarios').doc(usuario);
+      snapshot.update({'senha':senha,
+      'pasta' : pasta});
+    }catch (e)
+    {
+      retorno = false;
+      JanelaDialog(mensagem: 'Não foi possível realizar o cadastro: $e'
+      , mensagemTrue: 'ok');
+    }
+    return retorno;
+  }
+
   static Future<List<ContadoresModel>> BuscaContadores(
       BuildContext context) async {
     List<ContadoresModel> contadores = [];

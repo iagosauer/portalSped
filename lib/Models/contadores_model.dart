@@ -14,20 +14,32 @@ class ContadoresModel {
     return <String, dynamic>{
       'nome': nome,
       'clientes': clientes,
-      'senha' : senha
+      'senha': senha
     };
   }
 
   factory ContadoresModel.fromMap(Map<String, dynamic> map) {
     return ContadoresModel(
-      nome: map['nome'] as String,
-      senha: map['senha'] as String
-    );
+        nome: map['nome'] as String, senha: (map['senha']??'') as String);
   }
 
   String toJson() => json.encode(toMap());
 
   factory ContadoresModel.fromJson(String source) =>
       ContadoresModel.fromMap(json.decode(source) as Map<String, dynamic>);
+}
 
+class PastasModel {
+  PastasModel({required this.nome});
+  String nome;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{'nome': nome};
+  }
+
+    factory PastasModel.fromMap(Map<String, dynamic> map) {
+    return PastasModel(
+        nome: map['nome'] as String);
+  }
+    String toJson() => json.encode(toMap());
 }

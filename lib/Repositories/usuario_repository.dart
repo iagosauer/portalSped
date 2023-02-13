@@ -11,6 +11,19 @@ import 'package:portalsped/Widgets/janela_Dialog.dart';
 class UsuarioRepository {
   final dio = Dio();
 
+  Future criaPasta(String pasta) async
+  { 
+    try{
+    final response = await dio.put('${Valor.baseUrl}/pastas/$pasta');
+    }
+    catch(e)
+    {
+      JanelaDialog(mensagem: 'Erro ao criar nova pasta$e',
+      mensagemTrue: 'OK');
+    }
+
+  }
+
   Future<ContadoresModel?> VerificaLogin(String usuario, String senha, BuildContext context) async
   {
     try{
@@ -40,6 +53,7 @@ class UsuarioRepository {
     bool retorno = true;
     try{
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    
     final snapshot = await firestore.collection('usuarios').doc(usuario).get();
     if(snapshot.get('senha') == senhaAtual)
     {

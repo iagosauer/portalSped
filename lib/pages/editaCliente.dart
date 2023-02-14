@@ -50,6 +50,9 @@ class _EditaClienteState extends State<EditaCliente> {
       controlerSenha.text = contador!.senha!;
       controlerPasta.value = contador!.pasta!;
       textoBotao = 'ATUALIZAR';
+      controlerhabilitaComboBox.value = false;
+    } else {
+      controlerPasta.value = pastas.first;
     }
 
     setState(() {
@@ -86,7 +89,7 @@ class _EditaClienteState extends State<EditaCliente> {
                       builder: (context, value, _) {
                         return CustomDropDownButtonDialogForm(
                             list: pastas,
-                            habilitado: value,
+                            habilitado: !value,
                             controler: controlerPasta);
                       },
                     ),
@@ -103,7 +106,7 @@ class _EditaClienteState extends State<EditaCliente> {
                     const Divider(height: 20),
                     TextFormat(texto: 'Digite o nome da pasta:'),
                     TextFormField(
-                      enabled: !controlerhabilitaComboBox.value,
+                      enabled: controlerhabilitaComboBox.value,
                       controller: controlerPastaEscrito,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -146,33 +149,63 @@ class _EditaClienteState extends State<EditaCliente> {
 
   void _botaoSalvar(
       String usuario, String senha, String pasta, String pastaEscrito) async {
-    String nomePasta = '';
-    nomePasta = controlerhabilitaComboBox.value ? pasta : pastaEscrito;
-
-    if (usuario.length < 4) {
-      JanelaDialog(mensagem: 'Nome de usuario inválido', mensagemTrue: 'Ok');
-    } else if (senha.length < 3) {
-      JanelaDialog(
-          mensagem: 'Coloque pelo menos 3 caracteres para a senha',
-          mensagemTrue: 'Ok');
-    } else if (pasta.length < 4) {
-      JanelaDialog(mensagem: 'Nome da pasta inválida', mensagemTrue: 'Ok');
+    String nomePasta = 'a';
+    if (!controlerhabilitaComboBox.value) {
+      setState(() {
+        nomePasta = pasta;
+      });
     } else {
-      nomePasta = nomePasta.replaceAll(' ', '_');
+      setState(() {
+        nomePasta = pastaEscrito;
+      });
+    }
+    nomePasta = nomePasta.replaceAll(' ', '_');
+    nomePasta = nomePasta.toUpperCase();
+    if (usuario.length < 4) {
+      await JanelaDialog(
+              mensagem:
+                  'Nome de usuario inválido, coloque pelo menos 4 caracteres',
+              mensagemTrue: 'Ok')
+          .build(context);
+    } else if (senha.length < 3) {
+      await JanelaDialog(
+              mensagem: 'Coloque pelo menos 3 caracteres para a senha',
+              mensagemTrue: 'Ok')
+          .build(context);
+    } else if (nomePasta.length < 4) {
+      await JanelaDialog(mensagem: 'Nome da pasta inválida', mensagemTrue: 'Ok')
+          .build(context);
+    } else {
       if (contadorExistente) {
         bool aux = await ContadoresRepository.updateContador(
             usuario, senha, nomePasta);
         if (aux) {
           if (!pastas.contains(nomePasta)) {
+            // ignore: use_build_context_synchronously
             UsuarioRepository().criaPasta(nomePasta, context);
           }
+          // ignore: use_build_context_synchronously
           await JanelaDialog(
                   mensagem: 'Alterado Com Sucesso', mensagemTrue: 'Ok')
               .build(context);
-          Navigator.of(context)
-              .pushNamed('/manutencao', arguments: contadorAdm);
+        }
+      } else {
+        bool aux = await ContadoresRepository.adicionaContador(
+            usuario, senha, nomePasta);
+        if (aux) {
+          if (!pastas.contains(nomePasta)) {
+            // ignore: use_build_context_synchronously
+            UsuarioRepository().criaPasta(nomePasta, context);
+          }
+          // ignore: use_build_context_synchronously
+          await JanelaDialog(
+                  mensagem: 'Cliente cadastrado com Sucesso!',
+                  mensagemTrue: 'Ok')
+              .build(context);
         }
       }
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pushNamed('/manutencao', arguments: contadorAdm);
     }
   }
 }

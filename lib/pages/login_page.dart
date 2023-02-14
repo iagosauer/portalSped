@@ -17,6 +17,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late SharedPreferences prefs;
   var check = false;
+  bool carregando = false;
   final controlerSenha = TextEditingController(text: '');
   final controlerUsuario = TextEditingController(text: '');
 
@@ -44,7 +45,6 @@ class _LoginPageState extends State<LoginPage> {
       body: Center(
         child: Container(
           margin: const EdgeInsets.all(20),
-          height: 400,
           width: 400,
           child: Column(
             children: [
@@ -112,6 +112,13 @@ class _LoginPageState extends State<LoginPage> {
                   child: const Text('Entrar'),
                 ),
               ),
+              const SizedBox(
+                height: 20,
+              ),
+              carregando ? 
+              const Center(
+            child: CircularProgressIndicator(),
+          ) : Center()
             ],
           ),
         ),
@@ -120,12 +127,15 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _botaoLogin(String usuario, String senha) async {
+    setState(() {
+      carregando = true;
+    });
     var contador =
         await UsuarioRepository().VerificaLogin(usuario, senha, context);
     if (contador != null) {
       if(contador.nome.compareTo('portalAdmin') == 0)
       {
-          Navigator.of(context).pushNamed('/manutencao', arguments: contador);
+        Navigator.of(context).pushNamed('/manutencao', arguments: contador);
       }
       else
       {
@@ -137,5 +147,8 @@ class _LoginPageState extends State<LoginPage> {
       JanelaDialog(mensagem: 'Usuário ou senha incorreta', mensagemTrue: 'OK')
           .build(context);
     }
+    setState(() {
+      carregando = false;
+    });
   }
 }

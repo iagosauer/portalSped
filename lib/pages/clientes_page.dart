@@ -26,6 +26,7 @@ class _ClientesPageState extends State<ClientesPage> {
     super.initState();
     _verificaNumeroDeLinhas(widget.contador.clientes!);
   }
+
   var numeroLinhas = ValueNotifier(0);
 
   final int numeroCaracteres = 12;
@@ -54,16 +55,23 @@ class _ClientesPageState extends State<ClientesPage> {
                     child: Center(
                       child: SizedBox(
                         height: (130 + (numeroLinhas.value * 17)),
-                        child: Card(
-                          elevation: 20,
-                        shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                          child: ListaClientes(
-                              contador: widget.contador,
-                              clienteSelecionado: clienteSelecionado,
-                              numeroLinhas: numeroLinhas.value,
-                              numeroCaracteres: numeroCaracteres),
-                        ),
+                        child: widget.contador.clientes!.isEmpty
+                            ? const Text(
+                                'Não possui nenhuma pasta de Clientes',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              )
+                            : Card(
+                                elevation: 20,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: ListaClientes(
+                                    contador: widget.contador,
+                                    clienteSelecionado: clienteSelecionado,
+                                    numeroLinhas: numeroLinhas.value,
+                                    numeroCaracteres: numeroCaracteres),
+                              ),
                       ),
                     ),
                   ),
@@ -83,13 +91,14 @@ class _ClientesPageState extends State<ClientesPage> {
     );
   }
 
-  _verificaNumeroDeLinhas(List<ClientesModel> clientes)
-  {
+  _verificaNumeroDeLinhas(List<ClientesModel> clientes) {
     List<String> valores = [];
-    for(ClientesModel x in clientes)
+    if(clientes.isNotEmpty)
     {
-      valores.add(x.nome);
+      for (ClientesModel x in clientes) {
+        valores.add(x.nome);
+      }
+      numeroLinhas.value = Utils.numerosDeLinhasTotal(valores, numeroCaracteres);
     }
-    numeroLinhas.value = Utils.numerosDeLinhasTotal(valores, numeroCaracteres);
   }
 }

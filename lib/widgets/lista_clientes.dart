@@ -9,9 +9,12 @@ import 'package:portalsped/Models/contadores_model.dart';
 import 'package:portalsped/Repositories/clientes_repository.dart';
 
 class ListaClientes extends StatefulWidget {
-  ListaClientes({super.key, required this.contador, required this.clienteSelecionado, 
-  required this.numeroLinhas, 
-  required this.numeroCaracteres});
+  ListaClientes(
+      {super.key,
+      required this.contador,
+      required this.clienteSelecionado,
+      required this.numeroLinhas,
+      required this.numeroCaracteres});
   final numeroCaracteres;
   final ContadoresModel contador;
   final numeroLinhas;
@@ -39,7 +42,7 @@ class _ListaClientesState extends State<ListaClientes> {
         ? const CircularProgressIndicator()
         : Container(
             height: 150,
-            decoration:  const BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
               color: Color.fromARGB(255, 192, 210, 226),
             ),
@@ -49,9 +52,7 @@ class _ListaClientesState extends State<ListaClientes> {
           );
   }
 
-
   iniciaLista() async {
-
     List<ClientesModel> clientes = widget.contador.clientes!;
     for (int i = 0; i < clientes.length; i++) {
       clientesWidget.add(pastaCliente(clientes[i]));
@@ -62,18 +63,16 @@ class _ListaClientesState extends State<ListaClientes> {
     });
   }
 
-
   pastaCliente(ClientesModel cliente) {
-    var cor =const Color.fromRGBO(161, 201, 247, 1);
+    var cor = const Color.fromRGBO(161, 201, 247, 1);
     return Card(
-      shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       elevation: 20,
       borderOnForeground: true,
       color: const Color.fromARGB(255, 255, 255, 255),
       child: InkWell(
         hoverColor: const Color.fromARGB(255, 255, 235, 255),
-        onTap: () { 
+        onTap: () {
           widget.clienteSelecionado?.value = cliente;
         },
         child: Padding(
@@ -85,19 +84,20 @@ class _ListaClientesState extends State<ListaClientes> {
                 color: cor,
                 size: 100,
               ),
-                SizedBox(
-                  width: 150 ,
-                  child: Text(
-                    Utils.FormataTextoQuebraDeLinhas(cliente.nome, widget.numeroCaracteres),
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.inter(
+              SizedBox(
+                width: 150,
+                child: Text(
+                  Utils.FormataTextoQuebraDeLinhas(
+                      cliente.nome, widget.numeroCaracteres),
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.inter(
                       letterSpacing: 1,
-                        fontSize: 15,
-                        height: 1,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
+                      fontSize: 15,
+                      height: 1,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
                 ),
+              ),
             ],
           ),
         ),

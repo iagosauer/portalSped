@@ -9,7 +9,6 @@ class CustomDropDownButtonDialogForm<T> extends StatelessWidget {
   IconData? icon;
   bool habilitado;
   ValueNotifier controler;
-  late T dropdownValue;
   CustomDropDownButtonDialogForm(
       {super.key,
       required this.list,
@@ -17,14 +16,20 @@ class CustomDropDownButtonDialogForm<T> extends StatelessWidget {
       this.icon,
       this.habilitado = true,
       required this.controler}) {
-    if (controler.value == null) {
-      dropdownValue = list.first;
-      print(dropdownValue.toString());
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    T dropdownValue;
+    if (controler.value.compareTo('') == 0) {
+    dropdownValue = list.first;
+    print(dropdownValue.toString());
+    }
+    else
+    {
+      dropdownValue = controler.value;
+    }
+
     return DropdownButtonFormField<T>(
       decoration: InputDecoration(
         labelText: labelUp ?? '',

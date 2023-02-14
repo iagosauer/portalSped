@@ -39,7 +39,7 @@ class ContadoresRepository {
     bool retorno = true;
     try{
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
-      final snapshot = firestore.doc(usuario);
+      final snapshot = firestore.collection('usuarios').doc(usuario);
       snapshot.set({'usuario': usuario,
       'senha': senha,
       'pasta' : pasta});

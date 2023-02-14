@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:portalsped/Models/contadores_model.dart';
 import 'package:portalsped/Repositories/contadores_repository.dart';
+import 'package:portalsped/Repositories/usuario_repository.dart';
 import 'package:portalsped/Widgets/Text.dart';
 import 'package:portalsped/Widgets/appBar.dart';
 import 'package:portalsped/Widgets/drop_down_button.dart';
@@ -10,8 +11,7 @@ import 'package:portalsped/Widgets/janela_Dialog.dart';
 
 class EditaCliente extends StatefulWidget {
   EditaCliente({super.key, required this.args});
-   ArgumentsEditar args;
-
+  ArgumentsEditar args;
 
   @override
   State<EditaCliente> createState() => _EditaClienteState();
@@ -42,7 +42,7 @@ class _EditaClienteState extends State<EditaCliente> {
     pastas = await ContadoresRepository().fetchPastas();
     contador = widget.args.contador;
     contadorAdm = widget.args.contadorAdm;
-    contador == null
+    contador!.nome.compareTo('') == 0
         ? contadorExistente = false
         : contadorExistente = true;
     if (contadorExistente) {
@@ -83,12 +83,13 @@ class _EditaClienteState extends State<EditaCliente> {
                     TextFormat(texto: 'Pasta:'),
                     ValueListenableBuilder<bool>(
                       valueListenable: controlerhabilitaComboBox,
-                     builder: (context, value, _) {
-                      return CustomDropDownButtonDialogForm(
-                        list: pastas,
-                        habilitado: value,
-                        controler: controlerPasta);
-                     },),
+                      builder: (context, value, _) {
+                        return CustomDropDownButtonDialogForm(
+                            list: pastas,
+                            habilitado: value,
+                            controler: controlerPasta);
+                      },
+                    ),
                     const Divider(height: 20),
                     CheckboxListTile(
                         title: const Text('Adicionar nova pasta'),
@@ -109,7 +110,7 @@ class _EditaClienteState extends State<EditaCliente> {
                         label: Text('Pasta'),
                       ),
                     ),
-                      const Divider(height: 20),
+                    const Divider(height: 20),
                     TextFormat(texto: 'Senha:'),
                     TextFormField(
                       controller: controlerSenha,
@@ -118,7 +119,7 @@ class _EditaClienteState extends State<EditaCliente> {
                         label: Text('Senha'),
                       ),
                     ),
-                      const Divider(height: 20),
+                    const Divider(height: 20),
                     const SizedBox(
                       height: 10,
                     ),
@@ -127,8 +128,11 @@ class _EditaClienteState extends State<EditaCliente> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          _botaoSalvar(controlerUsuario.text, controlerSenha.text,
-                              controlerPasta.value, controlerPastaEscrito.text);
+                          _botaoSalvar(
+                              controlerUsuario.text,
+                              controlerSenha.text,
+                              controlerPasta.value,
+                              controlerPastaEscrito.text);
                         },
                         child: Text(textoBotao),
                       ),
@@ -156,15 +160,17 @@ class _EditaClienteState extends State<EditaCliente> {
     } else {
       nomePasta = nomePasta.replaceAll(' ', '_');
       if (contadorExistente) {
-        bool aux = await ContadoresRepository.updateContador(usuario, senha, nomePasta);
+        bool aux = await ContadoresRepository.updateContador(
+            usuario, senha, nomePasta);
         if (aux) {
-          if(!pastas.contains(nomePasta))
-          {
-
+          if (!pastas.contains(nomePasta)) {
+            UsuarioRepository().criaPasta(nomePasta, context);
           }
-          await JanelaDialog(mensagem: 'Alterado Com Sucesso', mensagemTrue: 'Ok').build(context);
-          Navigator.of(context).pushNamed('/manutencao',
-            arguments: contadorAdm);
+          await JanelaDialog(
+                  mensagem: 'Alterado Com Sucesso', mensagemTrue: 'Ok')
+              .build(context);
+          Navigator.of(context)
+              .pushNamed('/manutencao', arguments: contadorAdm);
         }
       }
     }

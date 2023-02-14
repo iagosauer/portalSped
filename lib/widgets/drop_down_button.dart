@@ -9,19 +9,23 @@ class CustomDropDownButtonDialogForm<T> extends StatelessWidget {
   IconData? icon;
   bool habilitado;
   ValueNotifier controler;
+  late T dropdownValue;
   CustomDropDownButtonDialogForm(
       {super.key,
       required this.list,
       this.labelUp,
       this.icon,
       this.habilitado = true,
-      required this.controler});
+      required this.controler}) {
+    if (controler.value == null) {
+      dropdownValue = list.first;
+      print(dropdownValue.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    T dropdownValue = controler.value??list.first;
     return DropdownButtonFormField<T>(
-      
       decoration: InputDecoration(
         labelText: labelUp ?? '',
         border: const OutlineInputBorder(
@@ -36,18 +40,19 @@ class CustomDropDownButtonDialogForm<T> extends StatelessWidget {
       value: dropdownValue,
       icon: const Icon(Icons.arrow_downward),
       isExpanded: true,
-
-      onChanged: habilitado ? (T? value) {
-        dropdownValue = value!;
-        controler.value = dropdownValue;
-      } : null,
+      onChanged: habilitado
+          ? (T? value) {
+              dropdownValue = value!;
+              controler.value = dropdownValue;
+            }
+          : null,
       items: list.map<DropdownMenuItem<T>>((T value) {
         var texto = '';
         if (value is String) {
           texto = value;
         }
         return DropdownMenuItem<T>(
-          enabled:  habilitado,
+          enabled: habilitado,
           value: value,
           child: SizedBox(
             child: Text(texto, textAlign: TextAlign.center),

@@ -11,66 +11,60 @@ import 'package:portalsped/Widgets/janela_Dialog.dart';
 class UsuarioRepository {
   final dio = Dio();
 
-  Future criaPasta(String pasta) async
-  { 
-    try{
-    final response = await dio.put('${Valor.baseUrl}/pastas/$pasta');
+  Future criaPasta(String pasta, BuildContext context) async {
+    try {
+      final response = await dio.get('${Valor.baseUrl}/pastas/$pasta');
+    } catch (e) {
+      JanelaDialog(mensagem: 'Erro ao criar nova pasta$e', mensagemTrue: 'OK')
+          .build(context);
     }
-    catch(e)
-    {
-      JanelaDialog(mensagem: 'Erro ao criar nova pasta$e',
-      mensagemTrue: 'OK');
-    }
-
   }
 
-  Future<ContadoresModel?> VerificaLogin(String usuario, String senha, BuildContext context) async
-  {
-    try{
-    final FirebaseFirestore firestore = FirebaseFirestore.instance;
-    final snapshot = await firestore.collection('usuarios').get();
-    var x;
-    ContadoresModel retorno;
-    for(x in snapshot.docs)
-    {
-      if((usuario.compareTo(x.get('usuario')) == 0) && (senha.compareTo(x.get('senha')) == 0) )
-      {
-        List<ClientesModel> clientes = await ClientesRepository().fetchClientes(x.get('pasta'), senha);
-        retorno = ContadoresModel(nome: x.get('usuario'), pasta: x.get('pasta'), clientes: clientes);
-        return retorno;
+  Future<ContadoresModel?> VerificaLogin(
+      String usuario, String senha, BuildContext context) async {
+    try {
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+      final snapshot = await firestore.collection('usuarios').get();
+      var x;
+      ContadoresModel retorno;
+      for (x in snapshot.docs) {
+        if ((usuario.compareTo(x.get('usuario')) == 0) &&
+            (senha.compareTo(x.get('senha')) == 0)) {
+          List<ClientesModel> clientes =
+              await ClientesRepository().fetchClientes(x.get('pasta'), senha);
+          retorno = ContadoresModel(
+              nome: x.get('usuario'),
+              pasta: x.get('pasta'),
+              clientes: clientes);
+          return retorno;
+        }
       }
-    }
-    }catch(E)
-    {
+    } catch (E) {
       JanelaDialog(mensagem: 'Usuário ou senha incorreta', mensagemTrue: 'OK')
           .build(context);
     }
     return null;
   }
 
-  Future<bool> TrocaSenha(String usuario, String senhaAtual, String senhaNova, BuildContext context) async
-  {
+  Future<bool> TrocaSenha(String usuario, String senhaAtual, String senhaNova,
+      BuildContext context) async {
     bool retorno = true;
-    try{
-    final FirebaseFirestore firestore = FirebaseFirestore.instance;
-    
-    final snapshot = await firestore.collection('usuarios').doc(usuario).get();
-    if(snapshot.get('senha') == senhaAtual)
-    {
-      final fireAtualiza = firestore.collection('usuarios');
-      fireAtualiza.doc(usuario).update({'senha': senhaNova});
-    }
-    else
-    {
-      JanelaDialog(mensagem:'Senha atual Incorreta', mensagemTrue: 'OK')
-      .build(context);
+    try {
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      final snapshot =
+          await firestore.collection('usuarios').doc(usuario).get();
+      if (snapshot.get('senha') == senhaAtual) {
+        final fireAtualiza = firestore.collection('usuarios');
+        fireAtualiza.doc(usuario).update({'senha': senhaNova});
+      } else {
+        JanelaDialog(mensagem: 'Senha atual Incorreta', mensagemTrue: 'OK')
+            .build(context);
+        retorno = false;
+      }
+    } catch (E) {
+      JanelaDialog(mensagem: E.toString(), mensagemTrue: 'OK').build(context);
       retorno = false;
-    }
-    }catch(E)
-    {
-      JanelaDialog(mensagem: E.toString(), mensagemTrue: 'OK')
-          .build(context);
-          retorno = false;
     }
 
     return retorno;

@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:portalsped/Models/contadores_model.dart';
-import 'package:portalsped/Pages/editaCliente.dart';
+import 'package:portalsped/pages/editaCliente.dart';
 import 'package:portalsped/Repositories/contadores_repository.dart';
 import 'package:portalsped/Widgets/appBar.dart';
 import 'package:portalsped/Widgets/janela_Dialog.dart';
@@ -70,20 +70,31 @@ class _ManutencaoPageState extends State<ManutencaoPage> {
                               itemCount: contadores.length,
                               itemBuilder: (_, int index) {
                                 return Card(
-                                  color: index%2!=0 ? Colors.white: Color.fromARGB(255, 211, 189, 179),
+                                  color: index % 2 != 0
+                                      ? Colors.white
+                                      : Color.fromARGB(255, 211, 189, 179),
                                   child: ListTile(
                                     onTap: () {
-                                      Navigator.of(context).pushNamed('/editar',
-                                       arguments: ArgumentsEditar(contadores[index], widget.contador), );
+                                      Navigator.of(context).pushNamed(
+                                        '/editar',
+                                        arguments: ArgumentsEditar(
+                                            contadores[index], widget.contador),
+                                      );
                                     },
-                                    leading:  Icon(
+                                    leading: Icon(
                                       Icons.person,
-                                      color: index%2!=0 ? Colors.black: Colors.white,
+                                      color: index % 2 != 0
+                                          ? Colors.black
+                                          : Colors.white,
                                     ),
-                                    title: Text(contadores[index].nome,
-                                    style: TextStyle(color: index%2!=0 ? Colors.black: Colors.white,
-                                     fontWeight: FontWeight.bold,
-                                     ),
+                                    title: Text(
+                                      contadores[index].nome,
+                                      style: TextStyle(
+                                        color: index % 2 != 0
+                                            ? Colors.black
+                                            : Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 );
@@ -97,4 +108,3 @@ class _ManutencaoPageState extends State<ManutencaoPage> {
             : const Card(child: Text('Usuário não autorizado'));
   }
 }
-

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portalsped/Models/contadores_model.dart';
-import 'package:portalsped/Pages/clientes_page.dart';
+import 'package:portalsped/pages/clientes_page.dart';
 import 'package:portalsped/Repositories/clientes_repository.dart';
 import 'package:portalsped/Widgets/janela_Dialog.dart';
 import 'package:portalsped/pages/login_page.dart';

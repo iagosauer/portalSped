@@ -3,6 +3,7 @@ import 'package:portalsped/Classes/Navegacao.dart';
 import 'package:portalsped/Models/contadores_model.dart';
 import 'package:portalsped/Repositories/usuario_repository.dart';
 import 'package:portalsped/Widgets/janela_Dialog.dart';
+import 'package:portalsped/pages/clientes_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -31,11 +32,9 @@ class _LoginPageState extends State<LoginPage> {
   _init() async {
     prefs = await SharedPreferences.getInstance();
     controlerUsuario.text = prefs.getString('user') ?? '';
-    controlerSenha.text = prefs.getString('pass') ?? '' ;
-    check = prefs.getBool('remember') ?? false ;
-    setState(() {
-      
-    });
+    controlerSenha.text = prefs.getString('pass') ?? '';
+    check = prefs.getBool('remember') ?? false;
+    setState(() {});
   }
 
   @override
@@ -80,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 20,
               ),
               CheckboxListTile(
-                title: const Text('Lembrar'),
+                  title: const Text('Lembrar'),
                   value: check,
                   onChanged: (value) {
                     setState(() {
@@ -95,14 +94,11 @@ class _LoginPageState extends State<LoginPage> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    if(check)
-                    {
+                    if (check) {
                       prefs.setString('user', controlerUsuario.text);
                       prefs.setString('pass', controlerSenha.text);
                       prefs.setBool('remember', check);
-                    }
-                    else
-                    {
+                    } else {
                       prefs.remove('user');
                       prefs.remove('pass');
                       prefs.remove('remember');
@@ -115,10 +111,11 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 20,
               ),
-              carregando ? 
-              const Center(
-            child: CircularProgressIndicator(),
-          ) : Center()
+              carregando
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Center()
             ],
           ),
         ),
@@ -133,15 +130,12 @@ class _LoginPageState extends State<LoginPage> {
     var contador =
         await UsuarioRepository().VerificaLogin(usuario, senha, context);
     if (contador != null) {
-      if(contador.nome.compareTo('portalAdmin') == 0)
-      {
+      if (contador.nome.compareTo('portalAdmin') == 0) {
         Navigator.of(context).pushNamed('/manutencao', arguments: contador);
+      } else {
+        Navigator.of(context).pushNamed('/clientes',
+            arguments: ArgumentosClientesPage(contador, false));
       }
-      else
-      {
-        Navigator.of(context).pushNamed('/clientes', arguments: contador);
-      }
-      
     } else {
       // ignore: use_build_context_synchronously
       JanelaDialog(mensagem: 'Usuário ou senha incorreta', mensagemTrue: 'OK')

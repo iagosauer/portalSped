@@ -11,20 +11,25 @@ import 'package:portalsped/Widgets/lista_clientes.dart';
 
 // ignore: must_be_immutable
 class ClientesPage extends StatefulWidget {
-  ContadoresModel contador;
+  ArgumentosClientesPage args;
 
-  ClientesPage({super.key, required this.contador});
+  ClientesPage({super.key, required this.args});
 
   @override
   State<ClientesPage> createState() => _ClientesPageState();
 }
 
 class _ClientesPageState extends State<ClientesPage> {
+  late ContadoresModel contador;
+  late bool admin;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _verificaNumeroDeLinhas(widget.contador.clientes!);
+    admin = widget.args.admin;
+    contador = widget.args.contador;
+    _verificaNumeroDeLinhas(contador.clientes!);
   }
 
   var numeroLinhas = ValueNotifier(0);
@@ -37,7 +42,9 @@ class _ClientesPageState extends State<ClientesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Appbar.appBar(widget.contador, context),
+      appBar: admin
+          ? Appbar.appBarManutencao(context)
+          : Appbar.appBar(contador, context),
       body: Stack(
         children: [
           Positioned.fill(
@@ -55,7 +62,7 @@ class _ClientesPageState extends State<ClientesPage> {
                     child: Center(
                       child: SizedBox(
                         height: (130 + (numeroLinhas.value * 17)),
-                        child: widget.contador.clientes!.isEmpty
+                        child: contador.clientes!.isEmpty
                             ? const Text(
                                 'Não possui nenhuma pasta de Clientes',
                                 textAlign: TextAlign.center,
@@ -67,7 +74,7 @@ class _ClientesPageState extends State<ClientesPage> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
                                 child: ListaClientes(
-                                    contador: widget.contador,
+                                    contador: contador,
                                     clienteSelecionado: clienteSelecionado,
                                     numeroLinhas: numeroLinhas.value,
                                     numeroCaracteres: numeroCaracteres),
@@ -79,7 +86,7 @@ class _ClientesPageState extends State<ClientesPage> {
                     valueListenable: clienteSelecionado,
                     builder: ((context, value, _) {
                       return ListaDocumentos(
-                          clienteSelecionado: value, contador: widget.contador);
+                          clienteSelecionado: value, contador: contador);
                     }),
                   ),
                 ],
@@ -93,12 +100,18 @@ class _ClientesPageState extends State<ClientesPage> {
 
   _verificaNumeroDeLinhas(List<ClientesModel> clientes) {
     List<String> valores = [];
-    if(clientes.isNotEmpty)
-    {
+    if (clientes.isNotEmpty) {
       for (ClientesModel x in clientes) {
         valores.add(x.nome);
       }
-      numeroLinhas.value = Utils.numerosDeLinhasTotal(valores, numeroCaracteres);
+      numeroLinhas.value =
+          Utils.numerosDeLinhasTotal(valores, numeroCaracteres);
     }
   }
+}
+
+class ArgumentosClientesPage {
+  ArgumentosClientesPage(this.contador, this.admin);
+  final ContadoresModel contador;
+  final bool admin;
 }

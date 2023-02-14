@@ -15,18 +15,15 @@ class CustomDropDownButtonDialogForm<T> extends StatelessWidget {
       this.labelUp,
       this.icon,
       this.habilitado = true,
-      required this.controler}) {
-  }
+      required this.controler});
 
   @override
   Widget build(BuildContext context) {
     T dropdownValue;
     if (controler.value.compareTo('') == 0) {
-    dropdownValue = list.first;
-    print(dropdownValue.toString());
-    }
-    else
-    {
+      dropdownValue = list.first;
+      print(dropdownValue.toString());
+    } else {
       dropdownValue = controler.value;
     }
 

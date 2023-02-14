@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:portalsped/Models/contadores_model.dart';
+import 'package:portalsped/Repositories/usuario_repository.dart';
+import 'package:portalsped/pages/clientes_page.dart';
 import 'package:portalsped/pages/editaCliente.dart';
 import 'package:portalsped/Repositories/contadores_repository.dart';
 import 'package:portalsped/Widgets/appBar.dart';
@@ -39,6 +41,13 @@ class _ManutencaoPageState extends State<ManutencaoPage> {
       return true;
     }
     return false;
+  }
+
+  Future<void> _botaoVisualizaClientes(ContadoresModel contador) async {
+    contador = (await UsuarioRepository()
+        .VerificaLogin(contador.nome, contador.senha!, context))!;
+    Navigator.of(context).pushNamed('/clientes',
+        arguments: ArgumentosClientesPage(contador, true));
   }
 
   @override
@@ -81,11 +90,19 @@ class _ManutencaoPageState extends State<ManutencaoPage> {
                                             contadores[index], widget.contador),
                                       );
                                     },
-                                    leading: Icon(
-                                      Icons.person,
+                                    leading: IconButton(
                                       color: index % 2 != 0
-                                          ? Colors.black
-                                          : Colors.white,
+                                          ? Colors.white
+                                          : Colors.black,
+                                      onPressed: () => _botaoVisualizaClientes(
+                                          contadores[index]),
+                                      icon: Icon(
+                                        weight: 20,
+                                        Icons.folder_open,
+                                        color: index % 2 != 0
+                                            ? Colors.black
+                                            : Colors.white,
+                                      ),
                                     ),
                                     title: Text(
                                       contadores[index].nome,

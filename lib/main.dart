@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const LoginPage(),
         '/clientes': (context) => ClientesPage(
-              contador:
-                  ModalRoute.of(context)!.settings.arguments as ContadoresModel,
+              args: ModalRoute.of(context)!.settings.arguments
+                  as ArgumentosClientesPage,
             ),
         '/trocaSenha': (context) => TrocarSenha(
               contador:

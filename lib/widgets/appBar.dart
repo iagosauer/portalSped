@@ -25,7 +25,9 @@ class Appbar {
               '/editar',
               arguments: ArgumentsEditar(contador, contadorAdmin),
             );
-          } else if (value == 1) {
+          }else if (value == 1) {
+            Navigator.of(context).pushNamed('/manutencao', arguments: contadorAdmin);
+          } else if (value == 2) {
             Navigator.of(context).pushNamed('/');
           }
         }), itemBuilder: ((context) {
@@ -36,6 +38,10 @@ class Appbar {
             ),
             const PopupMenuItem(
               value: 1,
+              child: Text('Listar Escritórios'),
+            ),
+            const PopupMenuItem(
+              value: 2,
               child: Text('Sair'),
             ),
           ];

@@ -70,7 +70,7 @@ class _LoginPageState extends State<TrocarSenha> {
                 controller: controlerSenhaNovoUm,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
-                  label: const Text('Digite a sua senha atual'),
+                  label: const Text('Digite nova senha'),
                   suffixIcon: InkWell(
                     child: GestureDetector(
                       child: Icon(obscureTextSenhaUm ? Icons.visibility_off
@@ -92,7 +92,7 @@ class _LoginPageState extends State<TrocarSenha> {
                 controller: controlerSenhaNovoDois,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
-                  label: const Text('Digite a sua senha atual'),
+                  label: const Text('Repita a nova senha'),
                   suffixIcon: InkWell(
                     child: GestureDetector(
                       child: Icon(obscureTextSenhaDois ? Icons.visibility_off

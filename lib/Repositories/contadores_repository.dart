@@ -23,7 +23,7 @@ class ContadoresRepository {
     Future<List<String>> fetchPastas() async {
     try {
       final response = await dio.get('${Valor.baseUrl}/contadores');
-      final lista = jsonDecode(response.data) as List;
+      final lista = response.data as List;
       return lista.map((e) => e['nome'] as String).toList();
     } catch (e) {
       throw Exception(e);

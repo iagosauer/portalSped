@@ -1,3 +1,3 @@
 class Valor {
-  static String baseUrl = 'http://localhost:8080';
+  static String baseUrl = 'http://portalsoft.sytes.net:8080';
 }

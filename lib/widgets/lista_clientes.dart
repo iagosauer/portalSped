@@ -41,14 +41,16 @@ class _ListaClientesState extends State<ListaClientes> {
     return carregando
         ? const CircularProgressIndicator()
         : Container(
-            height: 150,
+          height: 180,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
               color: Color.fromARGB(255, 192, 210, 226),
             ),
             width: MediaQuery.of(context).size.width - 20,
-            child: ListView(
-                scrollDirection: Axis.horizontal, children: clientesWidget),
+            child: Expanded(
+              child: ListView(
+                  scrollDirection: Axis.horizontal, children: clientesWidget),
+            ),
           );
   }
 
@@ -65,40 +67,40 @@ class _ListaClientesState extends State<ListaClientes> {
 
   pastaCliente(ClientesModel cliente) {
     var cor = const Color.fromRGBO(161, 201, 247, 1);
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      elevation: 20,
-      borderOnForeground: true,
-      color: const Color.fromARGB(255, 255, 255, 255),
-      child: InkWell(
-        hoverColor: const Color.fromARGB(255, 255, 235, 255),
-        onTap: () {
-          widget.clienteSelecionado?.value = cliente;
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Icon(
-                Icons.folder,
-                color: cor,
-                size: 100,
-              ),
-              SizedBox(
-                width: 150,
-                child: Text(
+    return SizedBox(
+      height: 500,
+      width: 200,
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        elevation: 20,
+        borderOnForeground: true,
+        color: const Color.fromARGB(255, 255, 255, 255),
+        child: InkWell(
+          hoverColor: const Color.fromARGB(255, 255, 235, 255),
+          onTap: () {
+            widget.clienteSelecionado?.value = cliente;
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Icon(
+                  Icons.folder,
+                  color: cor,
+                  size: 100,
+                ),
+                Text(
                   Utils.FormataTextoQuebraDeLinhas(
                       cliente.nome, widget.numeroCaracteres),
                   textAlign: TextAlign.center,
                   style: GoogleFonts.inter(
-                      letterSpacing: 1,
-                      fontSize: 15,
-                      height: 1,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
+                    fontSize: 15,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

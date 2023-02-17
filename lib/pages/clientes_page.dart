@@ -61,7 +61,6 @@ class _ClientesPageState extends State<ClientesPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Center(
                       child: SizedBox(
-                        height: (130 + (numeroLinhas.value * 17)),
                         child: contador.clientes!.isEmpty
                             ? const Text(
                                 'Não possui nenhuma pasta de Clientes',

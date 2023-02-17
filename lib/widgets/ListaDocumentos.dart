@@ -10,7 +10,7 @@ import 'package:portalsped/Models/documentos_model.dart';
 class ListaDocumentos extends StatefulWidget {
   ListaDocumentos(
       {super.key, required this.clienteSelecionado, required this.contador}) {
-    pai = contador.nome;
+    pai = contador.pasta!;
   }
 
   ClientesModel clienteSelecionado;
@@ -29,7 +29,7 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
 
   iniciaTabela() async {
     if (widget.clienteSelecionado.nome != '' && widget.aux) {
-      if (widget.pai.compareTo(widget.contador.nome) == 0) {
+      if (widget.pai.compareTo(widget.contador.pasta!) == 0) {
         widget.pai = '${widget.pai}/${widget.clienteSelecionado.nome}';
       }
       documentos = await DocumentosRepository().fetchDocumentos(widget.pai);

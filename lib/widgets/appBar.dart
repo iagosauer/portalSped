@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portalsped/Models/contadores_model.dart';
+import 'package:portalsped/pages/clientes_page.dart';
 import 'package:portalsped/pages/editaCliente.dart';
 
 class Appbar {
@@ -68,7 +69,7 @@ class Appbar {
           if (value == 0) {
             Navigator.of(context).pushNamed('/trocaSenha', arguments: contador);
           } else if (value == 1) {
-            Navigator.of(context).pushNamed('/clientes', arguments: contador);
+            Navigator.of(context).pushNamed('/clientes', arguments: ArgumentosClientesPage(contador, false));
           } else if (value == 2) {
             Navigator.of(context).pushNamed('/');
           }

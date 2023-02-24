@@ -1,8 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:portalsped/Classes/Valores.dart';
 import 'package:portalsped/Models/contadores_model.dart';
+import 'package:portalsped/Pages/erro.dart';
 import 'package:portalsped/Repositories/usuario_repository.dart';
+import 'package:portalsped/main.dart';
 import 'package:portalsped/pages/clientes_page.dart';
 import 'package:portalsped/pages/editaCliente.dart';
 import 'package:portalsped/Repositories/contadores_repository.dart';
@@ -11,7 +14,7 @@ import 'package:portalsped/Widgets/janela_Dialog.dart';
 
 class ManutencaoPage extends StatefulWidget {
   ManutencaoPage({super.key, required this.contador});
-  ContadoresModel contador;
+  ContadoresModel? contador;
   ValueNotifier<ContadoresModel>? contadorSelecionado;
 
   @override
@@ -21,6 +24,7 @@ class ManutencaoPage extends StatefulWidget {
 class _ManutencaoPageState extends State<ManutencaoPage> {
   List<ContadoresModel> contadores = [];
   bool carregando = true;
+  bool erro = false;
 
   @override
   void initState() {
@@ -34,10 +38,16 @@ class _ManutencaoPageState extends State<ManutencaoPage> {
     setState(() {
       carregando = false;
     });
+    if(widget.contador == null)
+    {
+      setState(() {
+        erro = true;
+      });
+    }
   }
 
   bool _verificaPermissao() {
-    if ('portalAdmin'.compareTo(widget.contador.nome) == 0) {
+    if (Valor.nomeAdmin.compareTo(widget.contador!.nome) == 0) {
       return true;
     }
     return false;
@@ -54,7 +64,9 @@ class _ManutencaoPageState extends State<ManutencaoPage> {
   Widget build(BuildContext context) {
     var largura = MediaQuery.of(context).size.width;
     // TODO: implement build
-    return carregando
+    return erro ?
+      ErrorPage(exception: Exception())
+    :carregando
         ? const Center(
             child: CircularProgressIndicator(),
           )
@@ -87,7 +99,7 @@ class _ManutencaoPageState extends State<ManutencaoPage> {
                                       Navigator.of(context).pushNamed(
                                         '/editar',
                                         arguments: ArgumentsEditar(
-                                            contadores[index], widget.contador),
+                                            contadores[index], widget.contador!),
                                       );
                                     },
                                     leading: IconButton(

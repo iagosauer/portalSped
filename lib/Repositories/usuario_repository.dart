@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
@@ -20,33 +21,33 @@ class UsuarioRepository {
     }
   }
 
-  Future<ContadoresModel?> VerificaLogin(
+  Future<ContadoresModel> verificaLogin(
       String usuario, String senha, BuildContext context) async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
       final snapshot = await firestore.collection('usuarios').get();
-      var x;
-      ContadoresModel retorno;
-      for (x in snapshot.docs) {
+  var retorno = ContadoresModel(nome: '');
+      for (var x in snapshot.docs) {
         if ((usuario.compareTo(x.get('usuario')) == 0) &&
             (senha.compareTo(x.get('senha')) == 0)) {
           List<ClientesModel> clientes =
               await ClientesRepository().fetchClientes(x.get('pasta'), senha);
-          retorno = ContadoresModel(
+         retorno = ContadoresModel(
               nome: x.get('usuario'),
               pasta: x.get('pasta'),
               clientes: clientes);
-          return retorno;
-        }
+          
+        }      
       }
-    } catch (E) {
+      return retorno;
+    } catch (e) {
       JanelaDialog(mensagem: 'Usuário ou senha incorreta', mensagemTrue: 'OK')
           .build(context);
+          throw Exception(e);
     }
-    return null;
   }
 
-  Future<bool> TrocaSenha(String usuario, String senhaAtual, String senhaNova,
+  Future<bool> trocaSenha(String usuario, String senhaAtual, String senhaNova,
       BuildContext context) async {
     bool retorno = true;
     try {

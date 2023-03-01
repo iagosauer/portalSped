@@ -55,7 +55,7 @@ class _ManutencaoPageState extends State<ManutencaoPage> {
 
   Future<void> _botaoVisualizaClientes(ContadoresModel contador) async {
     contador = (await UsuarioRepository()
-        .VerificaLogin(contador.nome, contador.senha!, context))!;
+        .verificaLogin(contador.nome, contador.senha!, context))!;
     Navigator.of(context).pushNamed('/clientes',
         arguments: ArgumentosClientesPage(contador, true));
   }

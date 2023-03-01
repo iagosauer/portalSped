@@ -133,7 +133,7 @@ class _LoginPageState extends State<TrocarSenha> {
     {
       if(senhaUm.length > 2)
       {
-        bool aux = await UsuarioRepository().TrocaSenha(widget.contador.nome, senhaAtual, senhaUm, context);
+        bool aux = await UsuarioRepository().trocaSenha(widget.contador.nome, senhaAtual, senhaUm, context);
         if(aux)
         {
           await JanelaDialog(mensagem:'Senha Atualizada com Sucesso!', mensagemTrue: 'OK')

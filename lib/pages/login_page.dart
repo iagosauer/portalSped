@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
       carregando = true;
     });
     var contador =
-        await UsuarioRepository().VerificaLogin(usuario, senha, context);
+        await UsuarioRepository().verificaLogin(usuario, senha, context);
     if (contador != null) {
       if (contador.nome.compareTo('portalAdmin') == 0) {
         Navigator.of(context).pushNamed('/manutencao', arguments: contador);

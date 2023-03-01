@@ -18,7 +18,7 @@ class DocumentosModel {
           {
             tipoDocumento = TipoDocumento.back;
           }
-          else if(setTipoDocumento!.compareTo('TipoDocumento.pasta') == 0)
+          else if(setTipoDocumento!.compareTo('pasta') == 0)
           {
             tipoDocumento = TipoDocumento.pasta;
           }

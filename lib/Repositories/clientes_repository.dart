@@ -9,9 +9,12 @@ class ClientesRepository {
   Future<List<ClientesModel>> fetchClientes(
       String escritorio, String senha) async {
     try {
-      final response = await dio.get('${Valor.baseUrl}/contadores/$escritorio');
+      final response = await dio.post('${Valor.baseUrl}/contadores', data:
+      {"nome": escritorio, "cliente": "", "path": ""}, 
+      options: Options(headers: {"content-Type":"application/json"})
+      );
       if (response.statusCode == 200) {
-        final lista = jsonDecode(response.data) as List;
+        final lista = response.data as List;
         return lista.map((e) => ClientesModel.fromMap(e)).toList();
       } else {
         return [];

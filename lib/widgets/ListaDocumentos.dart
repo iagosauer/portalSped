@@ -9,9 +9,7 @@ import 'package:portalsped/Models/documentos_model.dart';
 
 class ListaDocumentos extends StatefulWidget {
   ListaDocumentos(
-      {super.key, required this.clienteSelecionado, required this.contador}) {
-    pai = contador.pasta!;
-  }
+      {super.key, required this.clienteSelecionado, required this.contador});
 
   ClientesModel clienteSelecionado;
   ContadoresModel contador;
@@ -29,11 +27,15 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
 
   iniciaTabela() async {
     if (widget.clienteSelecionado.nome != '' && widget.aux) {
-      if (widget.pai.compareTo(widget.contador.pasta!) == 0) {
+      /*if (widget.pai.compareTo(widget.contador.pasta!) == 0) {
         widget.pai = '${widget.pai}/${widget.clienteSelecionado.nome}';
-      }
-      documentos = await DocumentosRepository().fetchDocumentos(widget.pai);
-      if (Utils.numeroBarrasString(widget.pai) > 1) {
+      }*/
+      documentos = await DocumentosRepository().
+      fetchDocumentos(widget.contador.pasta!, 
+      widget.clienteSelecionado.nome,
+      widget.pai
+      );
+      if (widget.pai.compareTo('') != 0) {
         documentos.add(DocumentosModel(
             nome: 'VOLTAR', setTipoDocumento: 'TipoDocumento.back'));
         documentos = documentos.reversed.toList();
@@ -52,7 +54,9 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
 
   download(String documento) async {
     bool download =
-        await DocumentosRepository().downloads(widget.pai + '/' + documento);
+        await DocumentosRepository().downloads(widget.contador.pasta!,
+         widget.clienteSelecionado.nome,
+         '${widget.pai}/$documento');
   }
 
   @override
@@ -101,7 +105,9 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
                                     if (documentos[index].tipoDocumento ==
                                         TipoDocumento.pasta) {
                                       setState(() {
-                                        widget.pai =
+                                        widget.pai.compareTo('') == 0 
+                                        ? widget.pai = documentos[index].nome
+                                        :widget.pai =
                                             '${widget.pai}/${documentos[index].nome}';
                                         widget.aux = true;
                                       });
@@ -110,8 +116,16 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
                                         TipoDocumento.back) {
                                       setState(
                                         () {
+                                          if(widget.pai.contains('/'))
+                                          {
                                           widget.pai =
                                               Utils.stringPai(widget.pai);
+                                          }
+                                          else
+                                          {
+                                            widget.pai = '';
+                                          }
+
                                           widget.aux = true;
                                           widget.flag.value =
                                               !widget.flag.value;

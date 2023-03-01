@@ -1,4 +1,4 @@
 class Valor {
-  static String baseUrl = 'http://portalsoft.sytes.net:8080';
+  static String baseUrl = 'https://servidor-sped-fboxwqyjfq-rj.a.run.app';
   static String nomeAdmin = 'portalAdmin';
 }

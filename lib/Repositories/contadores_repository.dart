@@ -22,7 +22,8 @@ class ContadoresRepository {
 
     Future<List<String>> fetchPastas() async {
     try {
-      final response = await dio.get('${Valor.baseUrl}/contadores');
+      final response = await dio.post('${Valor.baseUrl}/contadores',
+      data: {"nome": "","cliente": "","path": ""});
       final lista = response.data as List;
       return lista.map((e) => e['nome'] as String).toList();
     } catch (e) {

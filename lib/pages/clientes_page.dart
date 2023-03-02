@@ -32,7 +32,7 @@ class _ClientesPageState extends State<ClientesPage> {
     _verificaNumeroDeLinhas(contador.clientes!);
   }
 
-  var numeroLinhas = ValueNotifier(0);
+  final numeroLinhas = ValueNotifier(0);
 
   final int numeroCaracteres = 12;
 

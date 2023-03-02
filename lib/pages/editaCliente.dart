@@ -89,12 +89,11 @@ class _EditaClienteState extends State<EditaCliente> {
                       builder: (context, value, _) {
                         return CustomDropDownButtonDialogForm(
                             list: pastas,
-                            habilitado: !value,
                             controler: controlerPasta);
                       },
                     ),
                     const Divider(height: 20),
-                    CheckboxListTile(
+                    /*CheckboxListTile(
                         title: const Text('Adicionar nova pasta'),
                         value: controlerhabilitaComboBox.value,
                         onChanged: (value) {
@@ -113,7 +112,7 @@ class _EditaClienteState extends State<EditaCliente> {
                         label: Text('Pasta'),
                       ),
                     ),
-                    const Divider(height: 20),
+                    const Divider(height: 20),*/
                     TextFormat(texto: 'Senha:'),
                     TextFormField(
                       controller: controlerSenha,
@@ -149,16 +148,7 @@ class _EditaClienteState extends State<EditaCliente> {
 
   void _botaoSalvar(
       String usuario, String senha, String pasta, String pastaEscrito) async {
-    String nomePasta = 'a';
-    if (!controlerhabilitaComboBox.value) {
-      setState(() {
-        nomePasta = pasta;
-      });
-    } else {
-      setState(() {
-        nomePasta = pastaEscrito;
-      });
-    }
+    String nomePasta = pasta;
     nomePasta = nomePasta.replaceAll(' ', '_');
     nomePasta = nomePasta.toUpperCase();
     if (usuario.length < 4) {

@@ -47,10 +47,8 @@ class _ListaClientesState extends State<ListaClientes> {
               color: Color.fromARGB(255, 192, 210, 226),
             ),
             width: MediaQuery.of(context).size.width - 20,
-            child: Expanded(
-              child: ListView(
-                  scrollDirection: Axis.horizontal, children: clientesWidget),
-            ),
+            child: ListView(
+                scrollDirection: Axis.horizontal, children: clientesWidget),
           );
   }
 

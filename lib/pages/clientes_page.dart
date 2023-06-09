@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:portalsped/Classes/Utils.dart';
@@ -81,6 +79,28 @@ class _ClientesPageState extends State<ClientesPage> {
                       ),
                     ),
                   ),
+                  ValueListenableBuilder<ClientesModel>(
+                    valueListenable: clienteSelecionado,
+                       builder:(context, value, _) =>  Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: clienteSelecionado.value.nome != '' ?Colors.blue.shade100:null,
+
+                          ),
+                          height: 40,
+                          width: double.infinity,
+                          child: Center(
+                            child: Text(
+                              clienteSelecionado.value.nome,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                   fontSize: 25,
+                                   ),
+                            ),
+                          ),
+                        ),
+                  ),
+
                   ValueListenableBuilder<ClientesModel>(
                     valueListenable: clienteSelecionado,
                     builder: ((context, value, _) {

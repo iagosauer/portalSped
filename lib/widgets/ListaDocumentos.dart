@@ -25,8 +25,7 @@ class ListaDocumentos extends StatefulWidget {
 class _ListaDocumentosState extends State<ListaDocumentos> {
   List<DocumentosModel> documentos = [];
   @override
-  initState()
-  {
+  initState() {
     super.initState();
     iniciaTabela();
   }
@@ -36,11 +35,8 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
       /*if (widget.pai.compareTo(widget.contador.pasta!) == 0) {
         widget.pai = '${widget.pai}/${widget.clienteSelecionado.nome}';
       }*/
-      documentos = await DocumentosRepository().
-      fetchDocumentos(widget.contador.pasta!, 
-      widget.clienteSelecionado.nome,
-      widget.pai
-      );
+      documentos = await DocumentosRepository().fetchDocumentos(
+          widget.contador.pasta!, widget.clienteSelecionado.nome, widget.pai);
       if (widget.pai.compareTo('') != 0) {
         documentos.add(DocumentosModel(
             nome: 'VOLTAR', setTipoDocumento: 'TipoDocumento.back'));
@@ -59,10 +55,10 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
   }
 
   download(String documento) async {
-    bool download =
-        await DocumentosRepository().downloads(widget.contador.pasta!,
-         widget.clienteSelecionado.nome,
-         '${widget.pai}/$documento');
+    bool download = await DocumentosRepository().downloads(
+        widget.contador.pasta!,
+        widget.clienteSelecionado.nome,
+        '${widget.pai}/$documento');
   }
 
   @override
@@ -70,7 +66,8 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
     iniciaTabela();
     return Expanded(
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: widget.carregando
               ? const Center(
                   child: CircularProgressIndicator(),
@@ -78,103 +75,74 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
               : ValueListenableBuilder<bool>(
                   valueListenable: widget.flag,
                   builder: (context, value, _) {
-                    return Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: widget.clienteSelecionado.nome != '' ?Colors.blue.shade100:null,
-
-                          ),
-                          height: 40,
-                          width: double.infinity,
-                          child: Center(
-                            child: Text(
-                              widget.clienteSelecionado.nome,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                   fontSize: 25,
-                                   ),
-                            ),
-                          ),
-                        ),
-                        Card(
-                          elevation: 2,
-                          child: SingleChildScrollView(
-                            child: ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount: documentos.length,
-                              itemBuilder: (_, int index) {
-                                return Card(
-                                  child: ListTile(
-                                    leading: Icon(
-                                      (documentos[index].tipoDocumento ==
-                                              TipoDocumento.pasta)
-                                          ? Icons.folder
-                                          : (documentos[index].tipoDocumento ==
-                                                  TipoDocumento.documento)
-                                              ? Icons.file_download
-                                              : Icons.arrow_back,
-                                      color:
-                                          const Color.fromRGBO(161, 201, 247, 1),
-                                    ),
-                                    onTap: () {
-                                      setState(() {
-                                        widget.carregando = true;
-                                        widget.flag.value = !widget.flag.value;
-                                      });
-                                      if (documentos[index].tipoDocumento ==
-                                          TipoDocumento.pasta) {
-                                        setState(() {
-                                          widget.pai.compareTo('') == 0 
+                    return Card(
+                      elevation: 2,
+                      child: SingleChildScrollView(
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: documentos.length,
+                          itemBuilder: (_, int index) {
+                            return Card(
+                              child: ListTile(
+                                leading: Icon(
+                                  (documentos[index].tipoDocumento ==
+                                          TipoDocumento.pasta)
+                                      ? Icons.folder
+                                      : (documentos[index].tipoDocumento ==
+                                              TipoDocumento.documento)
+                                          ? Icons.file_download
+                                          : Icons.arrow_back,
+                                  color: const Color.fromRGBO(161, 201, 247, 1),
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    widget.carregando = true;
+                                    widget.flag.value = !widget.flag.value;
+                                  });
+                                  if (documentos[index].tipoDocumento ==
+                                      TipoDocumento.pasta) {
+                                    setState(() {
+                                      widget.pai.compareTo('') == 0
                                           ? widget.pai = documentos[index].nome
-                                          :widget.pai =
+                                          : widget.pai =
                                               '${widget.pai}/${documentos[index].nome}';
-                                          widget.aux = true;
-                                        });
-                                      } else if (documentos[index]
-                                              .tipoDocumento ==
-                                          TipoDocumento.back) {
-                                        setState(
-                                          () {
-                                            if(widget.pai.contains('/'))
-                                            {
-                                            widget.pai =
-                                                Utils.stringPai(widget.pai);
-                                            }
-                                            else
-                                            {
-                                              widget.pai = '';
-                                            }
-                        
-                                            widget.aux = true;
-                                            widget.flag.value =
-                                                !widget.flag.value;
-                                          },
-                                        );
-                                      } else if (documentos[index]
-                                              .tipoDocumento ==
-                                          TipoDocumento.documento) {
-                                        download(documentos[index].nome);
-                                      }
-                                    },
-                                    selectedColor:
-                                        const Color.fromRGBO(161, 201, 247, 1),
-                                    title: Text(
-                                      documentos[index].nome,
-                                      style: GoogleFonts.prompt(
-                                        letterSpacing: 2,
-                                        color: Colors.black,
-                                      ),
-                                    ),
+                                      widget.aux = true;
+                                    });
+                                  } else if (documentos[index].tipoDocumento ==
+                                      TipoDocumento.back) {
+                                    setState(
+                                      () {
+                                        if (widget.pai.contains('/')) {
+                                          widget.pai =
+                                              Utils.stringPai(widget.pai);
+                                        } else {
+                                          widget.pai = '';
+                                        }
+
+                                        widget.aux = true;
+                                        widget.flag.value = !widget.flag.value;
+                                      },
+                                    );
+                                  } else if (documentos[index].tipoDocumento ==
+                                      TipoDocumento.documento) {
+                                    download(documentos[index].nome);
+                                  }
+                                },
+                                selectedColor:
+                                    const Color.fromRGBO(161, 201, 247, 1),
+                                title: Text(
+                                  documentos[index].nome,
+                                  style: GoogleFonts.prompt(
+                                    letterSpacing: 2,
+                                    color: Colors.black,
                                   ),
-                                );
-                              },
-                            ),
-                          ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      ],
+                      ),
                     );
                   },
                 )),

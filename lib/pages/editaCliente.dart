@@ -1,4 +1,3 @@
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:portalsped/Models/contadores_model.dart';
@@ -9,6 +8,7 @@ import 'package:portalsped/Widgets/appBar.dart';
 import 'package:portalsped/Widgets/drop_down_button.dart';
 import 'package:portalsped/Widgets/janela_Dialog.dart';
 
+// ignore: must_be_immutable
 class EditaCliente extends StatefulWidget {
   EditaCliente({super.key, required this.args});
   ArgumentsEditar args;
@@ -138,6 +138,26 @@ class _EditaClienteState extends State<EditaCliente> {
                         },
                         child: Text(textoBotao),
                       ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      height: 50,
+                      width: double.infinity,
+                      child: contadorExistente ? ElevatedButton.icon(
+                        style: const ButtonStyle(
+
+                          backgroundColor: MaterialStatePropertyAll<Color>(Colors.red)
+                        ),
+                        onPressed: () {
+                        },
+                          icon: const Icon(Icons.delete),
+                          label: const Text('DELETAR',
+                              style: TextStyle(
+                                color: Colors.white
+                              ),)
+                      ) : null,
                     ),
                   ]),
                 ),

@@ -5,13 +5,12 @@ import 'package:portalsped/Classes/Valores.dart';
 import 'package:portalsped/Models/contadores_model.dart';
 import 'package:portalsped/Pages/erro.dart';
 import 'package:portalsped/Repositories/usuario_repository.dart';
-import 'package:portalsped/main.dart';
 import 'package:portalsped/pages/clientes_page.dart';
 import 'package:portalsped/pages/editaCliente.dart';
 import 'package:portalsped/Repositories/contadores_repository.dart';
 import 'package:portalsped/Widgets/appBar.dart';
-import 'package:portalsped/Widgets/janela_Dialog.dart';
 
+// ignore: must_be_immutable
 class ManutencaoPage extends StatefulWidget {
   ManutencaoPage({super.key, required this.contador});
   ContadoresModel? contador;
@@ -77,16 +76,10 @@ class _ManutencaoPageState extends State<ManutencaoPage> {
                   child: Container(
                     margin: const EdgeInsets.all(20),
                     width: largura - 100,
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Usuários',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        Card(
+                    child: Card(
                             child: SingleChildScrollView(
-                          child: ListView.builder(
                               scrollDirection: Axis.vertical,
+                          child: ListView.builder(
                               shrinkWrap: true,
                               itemCount: contadores.length,
                               itemBuilder: (_, int index) {
@@ -129,8 +122,8 @@ class _ManutencaoPageState extends State<ManutencaoPage> {
                                 );
                               }),
                         ))
-                      ],
-                    ),
+                      
+                    
                   ),
                 ),
               )

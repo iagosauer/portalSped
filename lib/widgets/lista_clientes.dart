@@ -1,12 +1,11 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portalsped/Classes/Utils.dart';
 import 'package:portalsped/Models/clientes_model.dart';
 import 'package:portalsped/Models/contadores_model.dart';
-import 'package:portalsped/Repositories/clientes_repository.dart';
 
 class ListaClientes extends StatefulWidget {
   ListaClientes(

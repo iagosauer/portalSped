@@ -1,14 +1,34 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:portalsped/Models/contadores_model.dart';
 import 'package:portalsped/Classes/Valores.dart';
+import 'package:portalsped/Models/logs_model.dart';
 import 'package:portalsped/Widgets/janela_Dialog.dart';
 
 class ContadoresRepository {
   final dio = Dio();
+
+  Future <List<LogsModel>> fecthLogs(BuildContext context) async{
+    List<LogsModel> logs = [];
+    try {
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+      final snapshot = await firestore.collection('logs').get();
+      var x;
+      for (x in snapshot.docs) {
+        logs.add(
+          LogsModel(
+              data: x.get('data'),
+              escritorio: x.get('escritorio'),
+          ),
+        );
+      }
+    } catch (E) {
+      JanelaDialog(mensagem: E.toString(), mensagemTrue: 'OK').build(context);
+    }
+    return logs;
+  }
 
   Future<List<ContadoresModel>> fetchUsuario() async {
     try {

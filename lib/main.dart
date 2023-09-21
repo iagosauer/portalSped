@@ -4,6 +4,7 @@ import 'package:portalsped/Classes/MyCustomBehavior.dart';
 import 'package:portalsped/Classes/Utils.dart';
 import 'package:portalsped/Models/contadores_model.dart';
 import 'package:portalsped/Pages/erro.dart';
+import 'package:portalsped/Pages/log_acesso.dart';
 import 'package:portalsped/pages/editaCliente.dart';
 import 'package:portalsped/pages/manutencao.dart';
 import 'package:portalsped/Pages/trocar_senha.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
               args:
                   ModalRoute.of(context)!.settings.arguments as ArgumentsEditar,
             ),
+         '/logs': (context)=>   LogsAcesso()
       },
     );
   }

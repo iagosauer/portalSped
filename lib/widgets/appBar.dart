@@ -28,7 +28,14 @@ class Appbar {
             );
           }else if (value == 1) {
             Navigator.of(context).pushNamed('/manutencao', arguments: contadorAdmin);
-          } else if (value == 2) {
+            
+          }
+          else if (value == 2) {
+            Navigator.of(context).pushNamed('/logs', arguments: contadorAdmin);
+            
+          }
+          
+           else if (value == 3) {
             Navigator.of(context).pushNamed('/');
           }
         }), itemBuilder: ((context) {
@@ -43,6 +50,10 @@ class Appbar {
             ),
             const PopupMenuItem(
               value: 2,
+              child: Text('Ver logs de acesso'),
+            ),
+            const PopupMenuItem(
+              value: 3,
               child: Text('Sair'),
             ),
           ];

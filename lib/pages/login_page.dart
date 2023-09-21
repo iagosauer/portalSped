@@ -130,6 +130,7 @@ class _LoginPageState extends State<LoginPage> {
       if (contador.nome.compareTo('portalAdmin') == 0) {
         Navigator.of(context).pushNamed('/manutencao', arguments: contador);
       } else {
+        
         Navigator.of(context).pushNamed('/clientes',
             arguments: ArgumentosClientesPage(contador, false));
       }

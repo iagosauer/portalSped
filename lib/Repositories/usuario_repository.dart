@@ -25,11 +25,17 @@ class UsuarioRepository {
       String usuario, String senha, BuildContext context) async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
+      final snapLog = firestore.collection('logs').doc();
+      snapLog.set({
+        'escritorio' : usuario,
+        'data' : DateTime.timestamp(),
+      });
       final snapshot = await firestore.collection('usuarios').get();
   var retorno = ContadoresModel(nome: '');
       for (var x in snapshot.docs) {
         if ((usuario.compareTo(x.get('usuario')) == 0) &&
             (senha.compareTo(x.get('senha')) == 0)) {
+
           List<ClientesModel> clientes =
               await ClientesRepository().fetchClientes(x.get('pasta'), senha);
          retorno = ContadoresModel(

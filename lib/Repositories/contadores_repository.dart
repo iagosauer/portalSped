@@ -14,7 +14,8 @@ class ContadoresRepository {
     List<LogsModel> logs = [];
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
-      final snapshot = await firestore.collection('logs').get();
+      final snapshot = await firestore.collection('logs').orderBy('data', descending: true).get();
+      //final snapshot = await firestore.collection('logs').get();
       var x;
       for (x in snapshot.docs) {
         logs.add(

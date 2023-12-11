@@ -34,7 +34,6 @@ class _LogsAcessoState extends State<LogsAcesso> {
         : Scaffold(
             appBar: Appbar.appBarManutencao(context),
             body: Container(
-              height: 180,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 color: Color.fromARGB(255, 192, 210, 226),

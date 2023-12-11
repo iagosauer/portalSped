@@ -26,30 +26,30 @@ class UsuarioRepository {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
       final snapLog = firestore.collection('logs').doc();
-      snapLog.set({
-        'escritorio' : usuario,
-        'data' : DateTime.timestamp(),
-      });
+      if (usuario != 'portalAdmin') {
+        snapLog.set({
+          'escritorio': usuario,
+          'data': DateTime.timestamp(),
+        });
+      }
       final snapshot = await firestore.collection('usuarios').get();
-  var retorno = ContadoresModel(nome: '');
+      var retorno = ContadoresModel(nome: '');
       for (var x in snapshot.docs) {
         if ((usuario.compareTo(x.get('usuario')) == 0) &&
             (senha.compareTo(x.get('senha')) == 0)) {
-
           List<ClientesModel> clientes =
               await ClientesRepository().fetchClientes(x.get('pasta'), senha);
-         retorno = ContadoresModel(
+          retorno = ContadoresModel(
               nome: x.get('usuario'),
               pasta: x.get('pasta'),
               clientes: clientes);
-          
-        }      
+        }
       }
       return retorno;
     } catch (e) {
       JanelaDialog(mensagem: 'Usuário ou senha incorreta', mensagemTrue: 'OK')
           .build(context);
-          throw Exception(e);
+      throw Exception(e);
     }
   }
 

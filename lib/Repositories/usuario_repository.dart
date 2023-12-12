@@ -13,9 +13,7 @@ class UsuarioRepository {
   final dio = Dio();
 
   Future criaPasta(String pasta, BuildContext context) async {
-    try {
-      final response = await dio.get('${Valor.baseUrl}/pastas/$pasta');
-    } catch (e) {
+    try {} catch (e) {
       JanelaDialog(mensagem: 'Erro ao criar nova pasta$e', mensagemTrue: 'OK')
           .build(context);
     }
@@ -26,17 +24,18 @@ class UsuarioRepository {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
       final snapLog = firestore.collection('logs').doc();
-      if (usuario != 'portalAdmin') {
-        snapLog.set({
-          'escritorio': usuario,
-          'data': DateTime.timestamp(),
-        });
-      }
+
       final snapshot = await firestore.collection('usuarios').get();
       var retorno = ContadoresModel(nome: '');
       for (var x in snapshot.docs) {
         if ((usuario.compareTo(x.get('usuario')) == 0) &&
             (senha.compareTo(x.get('senha')) == 0)) {
+          if (usuario != 'portalAdmin') {
+            snapLog.set({
+              'escritorio': usuario,
+              'data': DateTime.timestamp(),
+            });
+          }
           List<ClientesModel> clientes =
               await ClientesRepository().fetchClientes(x.get('pasta'), senha);
           retorno = ContadoresModel(

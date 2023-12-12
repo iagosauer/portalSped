@@ -1,7 +1,6 @@
 import 'package:portalsped/Classes/Utils.dart';
 import 'package:portalsped/Models/contadores_model.dart';
 import 'package:portalsped/Repositories/documentos_repository.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portalsped/Models/clientes_model.dart';
@@ -55,10 +54,6 @@ class _ListaDocumentosState extends State<ListaDocumentos> {
   }
 
   download(String documento) async {
-    bool download = await DocumentosRepository().downloads(
-        widget.contador.pasta!,
-        widget.clienteSelecionado.nome,
-        '${widget.pai}/$documento');
   }
 
   @override
